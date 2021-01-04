@@ -1,13 +1,11 @@
 package phase3;
 
-import java.awt.Point;
-import java.awt.geom.Line2D;
 
 /**
  * A class that holds all of the information required for a graph
  * @author L.Debnath
  * @since 16 Nov 20
- * @version 2.0
+ * @version 3.0
  */
 
 public class ColEdge 
