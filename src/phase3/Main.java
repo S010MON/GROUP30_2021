@@ -13,6 +13,7 @@ public class Main
 	{
 		String inputfile;
 		String alg;
+		int times = 1;
 		boolean autoDetect = true;
 		ReadGraph reader = new ReadGraph();
 		
@@ -72,8 +73,8 @@ public class Main
 			for (int i = 0; i < times; i++) {
 				//TODO: Update DSatur
 				ColEdge[] eCopy = reader.copyEdges(e);
-				DSATUR dsatur = new DSATUR(m, eCopy);
-				dsatur.run();
+				DSATUR dsatur = new DSATUR();
+				dsatur.run(e, m, n, inputfile);
 				double time = (System.nanoTime()-start)/1000000.0;
 				System.out.println("Time needed: " + time + " ms");
 			}
@@ -135,8 +136,8 @@ public class Main
 					} else {
 						//TODO: Update DSatur
 						ColEdge[] eCopy = reader.copyEdges(e);
-						DSATUR dsatur = new DSATUR(m, eCopy);
-						dsatur.run();
+						DSATUR dsatur = new DSATUR();
+						dsatur.run(e, m, n, inputfile);
 						solved = false;
 						if (max == min) {
 							chromaticNumber = min; // If range is 1, it is exact.
