@@ -17,7 +17,7 @@ public class Main
 		boolean autoDetect = true;
 		ReadGraph reader = new ReadGraph();
 		
-		if(args.length = 0)
+		if(args.length == 0)
 		{
 			prompt();
 		}
@@ -199,9 +199,9 @@ public class Main
 	{
 		System.out.println("Enter a filepath for a graph for a chomatic number");
 		System.out.println("Or use type one of the following options to pick an algorithm\n"
-				+ "b	Brute Force			d	DSatur"
+				+ "bf	Brute Force			d	DSatur"
 				+ "\ng	Greedy				bt	Backtracking"
-				+ "\n3	3 Sat");
+				+ "\ns	3 Sat");
 	}
 
 	//-------------------------------------------------------
