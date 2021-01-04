@@ -13,10 +13,11 @@ public class Main
 	{
 		String inputfile;
 		String alg;
+		int times = 1;
 		boolean autoDetect = true;
 		ReadGraph reader = new ReadGraph();
 		
-		if(args.length = 0)
+		if(args.length == 0)
 		{
 			prompt();
 		}
@@ -72,8 +73,8 @@ public class Main
 			for (int i = 0; i < times; i++) {
 				//TODO: Update DSatur
 				ColEdge[] eCopy = reader.copyEdges(e);
-				DSATUR dsatur = new DSATUR(m, eCopy);
-				dsatur.run();
+				DSATUR dsatur = new DSATUR();
+				dsatur.run(e, m, n, inputfile);
 				double time = (System.nanoTime()-start)/1000000.0;
 				System.out.println("Time needed: " + time + " ms");
 			}
@@ -135,8 +136,8 @@ public class Main
 					} else {
 						//TODO: Update DSatur
 						ColEdge[] eCopy = reader.copyEdges(e);
-						DSATUR dsatur = new DSATUR(m, eCopy);
-						dsatur.run();
+						DSATUR dsatur = new DSATUR();
+						dsatur.run(e, m, n, inputfile);
 						solved = false;
 						if (max == min) {
 							chromaticNumber = min; // If range is 1, it is exact.
@@ -198,9 +199,9 @@ public class Main
 	{
 		System.out.println("Enter a filepath for a graph for a chomatic number");
 		System.out.println("Or use type one of the following options to pick an algorithm\n"
-				+ "b	Brute Force			d	DSatur"
+				+ "bf	Brute Force			d	DSatur"
 				+ "\ng	Greedy				bt	Backtracking"
-				+ "\n3	3 Sat");
+				+ "\ns	3 Sat");
 	}
 
 	//-------------------------------------------------------
