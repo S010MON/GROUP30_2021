@@ -7,31 +7,72 @@ import org.junit.jupiter.api.Test;
 
 class DepthFirstSearchTest {
 	
-	private static ColEdge[] tree;
-	private static int treeN = 6;
-	private static ColEdge[] bigraph;
-	private static int bigraphN = 7;
-	private static ColEdge[] graph;
-	private static int graphN = 6;
-
-	
-	@BeforeAll
-	static void setup()
+	@Test
+	void testTree() 
 	{
+		System.out.println("\nTree");
+		
+		/* Arrange */
+		ColEdge[] tree;
+		int treeN = 6;
 		tree = new ColEdge[5];
 		tree[0] = new ColEdge(); tree[0].v = 1; tree[0].u = 2;
 		tree[1] = new ColEdge(); tree[1].v = 1; tree[1].u = 3;
 		tree[2] = new ColEdge(); tree[2].v = 2; tree[2].u = 4;
 		tree[3] = new ColEdge(); tree[3].v = 2; tree[3].u = 5;
 		tree[4] = new ColEdge(); tree[4].v = 3; tree[4].u = 6;
-		System.out.println("Tree Built");
 		
+		/* Act */
+		DepthFirstSearch dfs = new DepthFirstSearch(tree, treeN);
+		boolean actLoop = dfs.containsLoop();
+		System.out.println("Loop " + actLoop);
+		boolean actConnect = dfs.connected();
+		System.out.println("Connected " + actConnect);
+		
+		/* Assert */
+		boolean expLoop = false;
+		boolean expConnect = true;
+		assertEquals(expLoop, actLoop);
+		assertEquals(expConnect, actConnect);
+	}
+	
+	@Test
+	void testBiGraph()
+	{
+		System.out.println("\nBipartite Graph");
+		
+		/* Arrange */
+		ColEdge[] bigraph;
+		int bigraphN = 6;
 		bigraph = new ColEdge[5];
 		bigraph[0] = new ColEdge(); bigraph[0].v = 1; bigraph[0].u = 2;
-		bigraph[1] = new ColEdge(); bigraph[1].v = 3; bigraph[1].u = 2;
-		bigraph[2] = new ColEdge(); bigraph[2].v = 5; bigraph[2].u = 4;
-		bigraph[3] = new ColEdge(); bigraph[3].v = 7; bigraph[3].u = 4;
-		bigraph[4] = new ColEdge(); bigraph[4].v = 3; bigraph[4].u = 6;
+		bigraph[1] = new ColEdge(); bigraph[1].v = 1; bigraph[1].u = 4;
+		bigraph[2] = new ColEdge(); bigraph[2].v = 1; bigraph[2].u = 6;
+		bigraph[3] = new ColEdge(); bigraph[3].v = 3; bigraph[3].u = 2;
+		bigraph[4] = new ColEdge(); bigraph[4].v = 5; bigraph[4].u = 6;
+		
+		/* Act */
+		DepthFirstSearch dfs = new DepthFirstSearch(bigraph, bigraphN);
+		boolean actLoop = dfs.containsLoop();
+		System.out.println("Loop " + actLoop);
+		boolean actConnect = dfs.connected();
+		System.out.println("Connected " + actConnect);
+		
+		/* Assert */
+		boolean expLoop = false;
+		boolean expConnect = true;
+		assertEquals(expLoop, actLoop);
+		assertEquals(expConnect, actConnect);
+	}
+	
+	@Test
+	void testGraph()
+	{
+		System.out.println("\nGraph");
+		
+		/* Arrange */
+		ColEdge[] graph;
+		int graphN = 5;
 		
 		graph = new ColEdge[5];
 		graph[0] = new ColEdge(); graph[0].v = 1; graph[0].u = 2; 
@@ -39,12 +80,51 @@ class DepthFirstSearchTest {
 		graph[2] = new ColEdge(); graph[2].v = 2; graph[2].u = 4; 
 		graph[3] = new ColEdge(); graph[3].v = 2; graph[3].u = 5; 	
 		graph[4] = new ColEdge(); graph[4].v = 3; graph[4].u = 5;
+		
+		/* Act */
+		DepthFirstSearch dfs = new DepthFirstSearch(graph, graphN);
+		boolean actLoop = dfs.containsLoop();
+		System.out.println("Loop " + actLoop);
+		boolean actConnect = dfs.connected();
+		System.out.println("Connected " + actConnect);
+		
+		/* Assert */
+		boolean expLoop = true;
+		boolean expConnect = true;
+		assertEquals(expLoop, actLoop);
+		assertEquals(expConnect, actConnect);
 	}
+
 	
 	@Test
-	void test() 
+	void testDiscGraph()
 	{
-		DepthFirstSearch DFS = new DepthFirstSearch(bigraph, bigraphN);
+		System.out.println("\nDisconected Graph");
+		
+		/* Arrange */
+		ColEdge[] discgraph;
+		int discgraphN = 8;
+		
+		discgraph = new ColEdge[6];
+		discgraph[0] = new ColEdge(); discgraph[0].v = 1; discgraph[0].u = 2; 
+		discgraph[1] = new ColEdge(); discgraph[1].v = 2; discgraph[1].u = 3; 
+		discgraph[2] = new ColEdge(); discgraph[2].v = 3; discgraph[2].u = 1; 
+		discgraph[3] = new ColEdge(); discgraph[3].v = 4; discgraph[3].u = 5; 	
+		discgraph[4] = new ColEdge(); discgraph[4].v = 5; discgraph[4].u = 6;
+		discgraph[5] = new ColEdge(); discgraph[5].v = 6; discgraph[5].u = 4;
+		
+		/* Act */
+		DepthFirstSearch dfs = new DepthFirstSearch(discgraph, discgraphN);
+		boolean actLoop = dfs.containsLoop();
+		System.out.println("Loop " + actLoop);
+		boolean actConnect = dfs.connected();
+		System.out.println("Connected " + actConnect);
+		
+		/* Assert */
+		boolean expLoop = true;
+		boolean expConnect = false;
+		assertEquals(expLoop, actLoop);
+		assertEquals(expConnect, actConnect);
 	}
 
 }
