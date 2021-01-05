@@ -11,7 +11,7 @@ public class Colour
 		String inputfile = "/home/leon/git/GROUP30_2021/src/graphs/phase3_2020_graph02.txt";
 		String alg = "";
 		int times = 1;
-		int limit = 120000; // 2 minutes
+		int limit = 120; // 2 minutes
 		ReadGraph reader = new ReadGraph();
 		
 		/* No arguments provided */
