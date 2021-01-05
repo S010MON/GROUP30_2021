@@ -1,11 +1,10 @@
 package phase3;
 
-public class BruteForceThread {
-
-	private final static boolean DEBUG = false;
+public class BruteForceThread extends Thread
+{
 	int maxColors, id, startfrom;
 	Vertex[] vertices;
-	ColoringResult[] writeTo;
+	Boolean[] writeTo;
 	/**
 	 * Creates a thread with the listed variables
 	 * @param maxColors Maximum number of colors 
@@ -13,7 +12,7 @@ public class BruteForceThread {
 	 * @param startfrom
 	 * @param id
 	 */
-	public BruteForceThread(int maxColors, Vertex[] vertices, int startfrom, int id, ColoringResult[] writeTo) {
+	public BruteForceThread(int maxColors, Vertex[] vertices, int startfrom, int id, Boolean[] writeTo) {
 		this.startfrom = startfrom;
 		this.maxColors = maxColors;
 		this.vertices = vertices;
@@ -28,9 +27,9 @@ public class BruteForceThread {
 	{
 		try
 		{
-			if (DEBUG) System.out.println("Starting thread " + getId());
+			if (ReadGraph.DEBUG) System.out.println("Starting thread " + getId());
 			writeTo[id] = vertices[startfrom].next(vertices, maxColors);
-			if (DEBUG) System.out.println("Thread " + getId() + " finished");
+			if (ReadGraph.DEBUG) System.out.println("Thread " + getId() + " finished");
 		}
 		catch(Exception e)
 		{
@@ -40,3 +39,4 @@ public class BruteForceThread {
 		}
 	}
 }
+

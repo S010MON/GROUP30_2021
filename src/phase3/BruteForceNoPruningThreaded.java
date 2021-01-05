@@ -92,7 +92,7 @@ class Vertex  {
     }
     
 
-public class BruteForce{
+public class BruteForceNoPruningThreaded {
     /**
      * Main method of the brute force algorithm
 	 * 
