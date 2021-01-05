@@ -40,4 +40,24 @@ public class ColEdge
 		}
 		return exists;
 	}
+	
+	/**
+	 * Make a deep copy of a ColEdge array
+	 * 
+	 * @param e - An array of edges
+	 * @return - A deep copy of the array
+	 */
+	public static ColEdge[] copyEdges(ColEdge[] e)
+	{
+		ColEdge[] eCopy = new ColEdge[e.length];
+		for(int i = 0; i < e.length; i++)
+		{
+			eCopy[i] = new ColEdge();
+			eCopy[i].u = e[i].u;
+			eCopy[i].v = e[i].v;
+			eCopy[i].colU = e[i].colU;
+			eCopy[i].colV = e[i].colV;
+		}
+		return eCopy;
+	}
 }
