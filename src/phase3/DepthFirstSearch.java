@@ -1,6 +1,8 @@
 package phase3;
 
-import java.util.Stack;;
+
+import java.util.ArrayList;
+import java.util.Stack;
 
 /** -------------------------------------------------------
  * A class that performs a Depth First Search on a ColEdge graph and checks if any loops occur in the graph.
@@ -15,6 +17,7 @@ public class DepthFirstSearch
 	private boolean[] visited;
 	private boolean[][] adjacent;
 	private boolean loop = false;
+	private boolean connected = true;
 	
 	/** -------------------------------------------------------
 	 * Builds the adjacency matrix and conducts a recursive search of the graph.
@@ -35,7 +38,44 @@ public class DepthFirstSearch
 		
 		/* Recursive call that starts the search from node 1 */
 		search(adjacent, 1);
-		if(DEBUG) {System.out.println("Loop " + loop);}
+		
+		allVisited();
+		
+		///* Check if all nodes have been visited */
+		//while(!allVisited())
+		//{
+		//	subGraphs++;
+		//	ArrayList<ColEdge> subGraph = new ArrayList<ColEdge>();
+		//	/* For each node */
+		//	int nodesLeft = 0;
+		//	for(int i = 1; i < visited.length; i++)
+		//	{
+		//		/* If it has not been visited */
+		//		if(!visited[i])
+		//		{
+		//			nodesLeft++;
+		//			/* Search through all the edges */
+		//			for(ColEdge e: E)
+		//			{
+		//				/* If the edge matches the unvisited Node i */
+		//				if(e.v == i || e.u == i)
+		//				{
+		//					/* Add the node to the list */
+		//					subGraph.add(e);
+		//				}
+		//			}
+		//		}
+		//	}
+		//	
+		//	/* Create new adjacency matrix */
+		//	boolean[] subA = new boolean[nodesLeft];
+		//	for(ColEdge e: subGraph)
+		//	{
+		//		adjacent[e.v][e.u] = true;
+		//	}
+		//	
+		//}
+
 	}
 	
 	/** -------------------------------------------------------
@@ -68,6 +108,23 @@ public class DepthFirstSearch
 	}
 	
 	/** -------------------------------------------------------
+	 * Returns the next unvisited node
+	 * @return integer index
+	 */
+	private boolean allVisited()
+	{
+		for(int i = 1; i < visited.length; i++)
+		{
+			if(!visited[i])
+			{
+				connected = false;
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/** -------------------------------------------------------
 	 * Getter method to fetch loop
 	 * @return
 	 */
@@ -75,4 +132,10 @@ public class DepthFirstSearch
 	{
 		return loop;
 	}
+	
+	public boolean connected()
+	{
+		return connected;
+	}
 }
+
