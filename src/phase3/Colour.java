@@ -4,13 +4,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Main 
+public class Colour
 {
 	public static boolean DEBUG = false;
 
 	public static void main(String[] args) 
 	{
-		String inputfile = null;
+		String inputfile = "/home/leon/git/GROUP30_2021/src/graphs/phase3_2020_graph02.txt";
 		String alg;
 		boolean autoDetect = true;
 		ReadGraph reader = new ReadGraph();
@@ -44,7 +44,10 @@ public class Main
 		/* Check for Bipartite Graphs and Trees */
 		DepthFirstSearch dfs = new DepthFirstSearch(e, n);
 		if(!dfs.containsLoop())
+		{
 			System.out.println("G(X) = 2");
+			System.exit(0);
+		}
 		
 //		/* Switch for separate algorithms or automatic selection */
 //		long start = System.nanoTime();
@@ -199,7 +202,9 @@ public class Main
 //		}
 	}
 	
-	
+	/** -------------------------------------------------------
+	 *  Prompt the user for input in the case of an exception
+	 */
 	private static void prompt()
 	{
 		System.out.println("Enter a filepath for a graph for a chomatic number");
@@ -210,9 +215,8 @@ public class Main
 				+ "\nbt	Backtracking"
 				+ "\ns	3 Sat");
 	}
-
-	//-------------------------------------------------------
-	/**
+	
+	/** -------------------------------------------------------
 	 * Checks if a file exists
 	 * @param path Path to file
 	 * @return {@code true} if the file exists
