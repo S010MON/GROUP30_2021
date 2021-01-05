@@ -1,1 +1,4 @@
 /bin/
+.project
+.vscode/
+log.txt
