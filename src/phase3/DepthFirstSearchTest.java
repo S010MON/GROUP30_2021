@@ -1,6 +1,7 @@
 package phase3;
 
-import org.junit.jupiter.api.BeforeAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.Test;
 
 class DepthFirstSearchTest {

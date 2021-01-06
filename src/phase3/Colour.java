@@ -81,7 +81,6 @@ public class Colour
 			for (int p = 0; p < times; p++) {
 				int lower = 2;
 				int upper = Integer.MAX_VALUE;
-				boolean exact = true;
 				int chromaticNumber = 0;
 				boolean solved = false;
 				if (m == 0) chromaticNumber = 1;
