@@ -41,7 +41,8 @@ public class Colour
 		int n = reader.getN();
 		
 		/* Check for Bipartite Graphs and Trees */
-		DepthFirstSearch dfs = new DepthFirstSearch(e, n);
+		DepthFirstSearch dfs = new DepthFirstSearch();
+		dfs.depthFirstSearch(e, n);
 		if(!dfs.containsLoop())
 		{
 			System.out.println("Chromatic number is: 2");
