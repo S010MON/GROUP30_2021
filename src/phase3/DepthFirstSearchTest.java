@@ -23,7 +23,7 @@ class DepthFirstSearchTest {
 		
 		/* Act */
 		DepthFirstSearch dfs = new DepthFirstSearch();
-		System.out.println(dfs.depthFirstSearch(tree, treeN) + " SubGraphs");
+		System.out.println(dfs.run(tree, treeN) + " SubGraphs");
 		boolean actLoop = dfs.containsLoop();
 		System.out.println("Loop " + actLoop);
 		boolean actConnect = dfs.connected();
@@ -53,7 +53,7 @@ class DepthFirstSearchTest {
 		
 		/* Act */
 		DepthFirstSearch dfs = new DepthFirstSearch();
-		System.out.println(dfs.depthFirstSearch(bigraph, bigraphN) + " SubGraphs");
+		System.out.println(dfs.run(bigraph, bigraphN) + " SubGraphs");
 		boolean actLoop = dfs.containsLoop();
 		System.out.println("Loop " + actLoop);
 		boolean actConnect = dfs.connected();
@@ -84,7 +84,7 @@ class DepthFirstSearchTest {
 		
 		/* Act */
 		DepthFirstSearch dfs = new DepthFirstSearch();
-		System.out.println(dfs.depthFirstSearch(graph, graphN) + " SubGraphs");
+		System.out.println(dfs.run(graph, graphN) + " SubGraphs");
 		boolean actLoop = dfs.containsLoop();
 		System.out.println("Loop " + actLoop);
 		boolean actConnect = dfs.connected();
@@ -117,7 +117,7 @@ class DepthFirstSearchTest {
 		
 		/* Act */
 		DepthFirstSearch dfs = new DepthFirstSearch();
-		System.out.println(dfs.depthFirstSearch(discgraph, discgraphN) + " SubGraphs");
+		System.out.println(dfs.run(discgraph, discgraphN) + " SubGraphs");
 		boolean actLoop = dfs.containsLoop();
 		System.out.println("Loop " + actLoop);
 		boolean actConnect = dfs.connected();
