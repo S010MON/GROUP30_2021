@@ -1,12 +1,11 @@
 package phase3;
 
-
 import java.util.Stack;
 
 /** -------------------------------------------------------
  * A class that performs a Depth First Search on a ColEdge graph and checks if any loops occur in the graph.
  * If no loops are found it can be inferred that the graph is 2-Colourable
- * @author L Debnath
+ * @author L.Debnath
  * @since 5 Jan 21
  */
 public class DepthFirstSearch 
@@ -17,72 +16,119 @@ public class DepthFirstSearch
 	private boolean[][] adjacent;
 	private boolean loop = false;
 	private boolean connected = true;
-	
+	private int noOfSubgraphs;
+			
 	/** -------------------------------------------------------
-	 * Builds the adjacency matrix and conducts a recursive search of the graph.
+	 * Conducts a recursive search of the graph to discover loops and sub-graphs
 	 * @param E - The set of edges of the graph
 	 * @param n - The number of nodes within the graph
+	 * @return int - The number of sub-graphs
 	 */
-	public DepthFirstSearch(ColEdge[] E, int n)
+	public int depthFirstSearch(ColEdge[] E, int n)
 	{
 		visited = new boolean[n+1];			// n+1 due to discounting the 0 node
-		adjacent = new boolean[n+1][n+1];  
+		adjacent = createMatrix(E, n);
+		noOfSubgraphs = 1;
 		
-		/* Create the Adjacency matrix */
+		/* Find the first node and call a recursive search from there */
+		int start = E[0].v;
+		search(adjacent, start, 0);		// 0 denotes no parent nodes
+		
+		/* If there are nodes left in the graph -> subgraph */
+		if(unvisitedNodes() > 0)
+		{
+			connected = false;
+			ColEdge[] subGraph = new ColEdge[E.length];
+			
+			/* find all unconnected parts of the graph and create a new subGraph */
+			int i = 0;
+			for(ColEdge e: E)
+			{
+				if(!visited[e.v])
+					subGraph[i++] = e;
+			}
+			subGraph = trim(subGraph);
+			
+			/* Create a new Depth First Search and recursively call it */
+			DepthFirstSearch dfs = new DepthFirstSearch();
+			noOfSubgraphs = noOfSubgraphs + depthFirstSearch(subGraph, n, visited);
+			/* Check loop latch in sub graphs */
+			if(dfs.containsLoop())
+				loop = true;
+		}
+		return noOfSubgraphs;
+	}
+	
+	
+	/** -------------------------------------------------------
+	 *  Conducts a recursive search of the graph to discover loops and sub-graphs
+	 * @param E 		- The set of edges of the graph
+	 * @param n 		- The number of nodes within the graph
+	 * @param visited 	- The array of previously visited nodes
+	 * @return int - The number of sub-graphs
+	 */
+	public int depthFirstSearch(ColEdge[] E, int n, boolean[] visited)
+	{
+		this.visited = visited;
+		adjacent = createMatrix(E, n);
+		noOfSubgraphs = 1;
+		
+		/* Find the first node and call a recursive search from there */
+		int start = E[0].v;
+		search(adjacent, start, 0);		// 0 denotes no parent nodes
+		
+		/* If there are nodes left in the graph -> subgraph */
+		if(unvisitedNodes() > 0)
+		{
+			connected = false;
+			ColEdge[] subGraph = new ColEdge[E.length];
+			
+			/* find all unconnected parts of the graph and create a new subGraph */
+			int i = 0;
+			for(ColEdge e: E)
+			{
+				if(!visited[e.v])
+					subGraph[i++] = e;
+			}
+			subGraph = trim(subGraph);
+			
+			/* Create a new Depth First Search and recursively call it */
+			DepthFirstSearch dfs = new DepthFirstSearch();
+			noOfSubgraphs = noOfSubgraphs + depthFirstSearch(subGraph, n, visited);
+			/* Check loop latch in sub graphs */
+			if(dfs.containsLoop())
+				loop = true;
+		}
+		return noOfSubgraphs;
+	}
+	
+	
+	/** -------------------------------------------------------
+	 * Builds the adjacency matrix
+	 * @param E
+	 * @param n
+	 * @return boolean[][] matrix
+	 */
+	private boolean[][] createMatrix(ColEdge[] E, int n)
+	{
+		boolean[][] A = new boolean[n+1][n+1];  // n+1 due to the 0 node not being used
 		for(ColEdge e: E)
 		{
-			adjacent[e.v][e.u] = true;
-			if(DEBUG) {System.out.println(e.v + " -> " + e.u);}
+			A[e.v][e.u] = true;					// Set bi-directional adjacency
+			A[e.u][e.v] = true;
+			if(DEBUG) {System.out.println(e.v + " - " + e.u);}
 		}
-		
-		/* Recursive call that starts the search from node 1 */
-		search(adjacent, 1);
-		
-		allVisited();
-		
-		///* Check if all nodes have been visited */
-		//while(!allVisited())
-		//{
-		//	subGraphs++;
-		//	ArrayList<ColEdge> subGraph = new ArrayList<ColEdge>();
-		//	/* For each node */
-		//	int nodesLeft = 0;
-		//	for(int i = 1; i < visited.length; i++)
-		//	{
-		//		/* If it has not been visited */
-		//		if(!visited[i])
-		//		{
-		//			nodesLeft++;
-		//			/* Search through all the edges */
-		//			for(ColEdge e: E)
-		//			{
-		//				/* If the edge matches the unvisited Node i */
-		//				if(e.v == i || e.u == i)
-		//				{
-		//					/* Add the node to the list */
-		//					subGraph.add(e);
-		//				}
-		//			}
-		//		}
-		//	}
-		//	
-		//	/* Create new adjacency matrix */
-		//	boolean[] subA = new boolean[nodesLeft];
-		//	for(ColEdge e: subGraph)
-		//	{
-		//		adjacent[e.v][e.u] = true;
-		//	}
-		//	
-		//}
-
+		return A;
 	}
+	
 	
 	/** -------------------------------------------------------
 	 * A recursive search algorithm that explores down each branch until it finds a leaf node
-	 * @param adjacent - The matrix of adjacent nodes
-	 * @param n - The current node
+	 * @param adjacent 		- The matrix of adjacent nodes
+	 * @param n 			- The current node
+	 * @param parent 		- The parent node of the current node	
 	 */
-	public void search( boolean[][] adjacent, int n)
+	public void search( boolean[][] adjacent, int n, int parent)
 	{
 		/* Set the current node to visited */
 		visited[n] = true;
@@ -92,7 +138,7 @@ public class DepthFirstSearch
 		for(int m = 1; m < adjacent[n].length; m++)
 		{
 			/* If a visited adjacent node is found that is not the parent */
-			if( adjacent[n][m] && visited[m] && (m != n))
+			if( adjacent[n][m] && visited[m] && (m != n) && (m != parent))
 				loop = true;
 			/* If an unvisited adjacent node is found, add to the stack */
 			if( adjacent[n][m] && !visited[m] )
@@ -102,30 +148,49 @@ public class DepthFirstSearch
 		/* Work through the stack of adjacent nodes, searching down each one */
 		while(!stack.isEmpty())
 		{
-			search(adjacent, stack.pop());
+			search(adjacent, stack.pop(), n);
 		}
 	}
+	
 	
 	/** -------------------------------------------------------
 	 * Returns the next unvisited node
 	 * @return integer index
 	 */
-	private boolean allVisited()
+	private int unvisitedNodes()
 	{
+		int unvisitedNodes = 0;
 		for(int i = 1; i < visited.length; i++)
 		{
 			if(!visited[i])
-			{
-				connected = false;
-				return false;
-			}
+				unvisitedNodes++;
 		}
-		return true;
+		return unvisitedNodes;
 	}
 	
 	/** -------------------------------------------------------
-	 * Getter method to fetch loop
-	 * @return
+	 * Trim a ColEdge array down to only non null values
+	 * @return ColEdge[]
+	 */
+	private ColEdge[] trim(ColEdge[] E)
+	{
+		int trimTo = 0;
+		for(int i = 0; i < E.length; i++)
+		{
+			if(E[i] != null)
+				trimTo++;
+		}
+		
+		ColEdge[] trimmed = new ColEdge[trimTo];
+		for(int i = 0; i < trimmed.length; i++)
+		{
+			trimmed[i] = E[i];
+		}
+		return trimmed;
+	}
+		
+	/** -------------------------------------------------------
+	 * Getters
 	 */
 	public boolean containsLoop()
 	{
@@ -136,5 +201,6 @@ public class DepthFirstSearch
 	{
 		return connected;
 	}
-}
+	
 
+}
