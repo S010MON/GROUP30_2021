@@ -20,7 +20,7 @@ public class ThreadObject extends Thread
 				try
 				{
 					System.out.println(Thread.currentThread().getId() + ": " + counter);
-					Thread.currentThread().sleep(delay);
+					Thread.sleep(delay);
 				}
 				catch(InterruptedException e)
 				{

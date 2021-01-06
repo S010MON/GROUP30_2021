@@ -12,18 +12,25 @@ package phase3;
 
 import java.util.Arrays;
 
-public class DSATUR
+public class DSATUR extends GraphColouringAlgorithm
 {
+
+	public DSATUR() {
+		bound = Bound.UPPER;
+	}
+	
 	/**
-	 * The loop method of the DSatur Algorithm. This will continually run until the graph is solved.
-	 * @param e	- ColEdge - Array of edges.
-	 * @param m	- Int - Number of vertices.
-	 * @param n 	- Int - Number of edges.
-	 * @return 	- Int - The chromatic number
+	 * Computes the UPPER BOUND of a graph
+	 * @param e	Array of edges.
+	 * @param m	Number of vertices.
+	 * @param n Number of edges.
+     * @param fileName Number of edges.
+	 * @return UPPER BOUND
 	 */
-	public int run(ColEdge[] e, int m, int n, String inputfile)
+	public int solve(ColEdge[] e, int m, int n, String inputfile)
 		{
-			if(ReadGraph.DEBUG) System.out.println("Running DSATUR");
+			e = ColEdge.copyEdges(e);
+			if(Colour.DEBUG) System.out.println("Running DSATUR");
 			// Start the clock!
 			long start = System.nanoTime();
 			// Colour the most frequent vertex
@@ -56,12 +63,13 @@ public class DSATUR
 					chromeNumb = col;
 				
 			}
-			if(ReadGraph.DEBUG) {printGraph(e);}
+			if(Colour.DEBUG) {printGraph(e);}
 			
-			if (ReadGraph.DEBUG) System.out.println("Chromatic Number = " + (chromeNumb + 1)); // Add one due to counting colour 0
+			if (Colour.DEBUG) System.out.println("Chromatic Number = " + (chromeNumb + 1)); // Add one due to counting colour 0
 			double time = (System.nanoTime()-start)/1000000.0;
-			if (ReadGraph.DEBUG) System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
+			if (Colour.DEBUG) System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
 			Logger.logResults("DSATUR", inputfile, chromeNumb + 1, time);
+			Colour.set(bound, chromeNumb + 1);
 			return chromeNumb + 1;
 		}
 		
@@ -82,7 +90,7 @@ public class DSATUR
 				if(edge.u == vertex)
 					edge.colU = colour;
 			}	
-			if(ReadGraph.DEBUG) {System.out.println("Coloured V" + vertex + " colour " + colour);}
+			if(Colour.DEBUG) {System.out.println("Coloured V" + vertex + " colour " + colour);}
 			return e;
 		}
 		
@@ -105,7 +113,7 @@ public class DSATUR
 					sat[e[i].u]++;
 			}
 			
-			if(ReadGraph.DEBUG){
+			if(Colour.DEBUG){
 				for(int i = 0; i < sat.length; i++){
 					System.out.println("V" + i + ": adjacent to " + sat[i] + " vertices");}}
 		
@@ -118,7 +126,7 @@ public class DSATUR
 				sum += sat[i];
 			}
 			
-			if(ReadGraph.DEBUG){System.out.println("Saturation: " + sum) ;}
+			if(Colour.DEBUG){System.out.println("Saturation: " + sum) ;}
 			return mostSat;
 		}
 	
@@ -142,7 +150,7 @@ public class DSATUR
 					freq[e[i].u]++;
 			}		
 			
-			if(ReadGraph.DEBUG){
+			if(Colour.DEBUG){
 				for(int i = 0; i < freq.length; i++){
 					System.out.println("V" + i + ": appeared " + freq[i] + " times");}}
 			
@@ -169,7 +177,7 @@ public class DSATUR
 				if(!e[i].legal())
 					legal = false;
 			}
-			if(ReadGraph.DEBUG) {System.out.println("Legal: " + legal);}
+			if(Colour.DEBUG) {System.out.println("Legal: " + legal);}
 			return legal;
 		}
 		
@@ -190,7 +198,7 @@ public class DSATUR
 				if(e[i].colU == -1)
 					complete = false;
 			}
-			if(ReadGraph.DEBUG) {System.out.println("complete: " + complete);}
+			if(Colour.DEBUG) {System.out.println("complete: " + complete);}
 			return complete;
 		}
 		
@@ -203,7 +211,7 @@ public class DSATUR
 		{
 			for(ColEdge edge: e)
 			{
-				if (ReadGraph.DEBUG) System.out.println("V" + edge.v +" (" + edge.colV +") -> U" + edge.u + "(" + edge.colU + ")");
+				if (Colour.DEBUG) System.out.println("V" + edge.v +" (" + edge.colV +") -> U" + edge.u + "(" + edge.colU + ")");
 			}
 		}
 }

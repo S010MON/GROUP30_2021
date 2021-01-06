@@ -8,57 +8,63 @@ package phase3;
  * @author L.Debnath
  * @version 1.0
  */
+import java.util.Arrays;
 
-import java.util.*;
-
-public class SAT3
+public class SAT3 extends GraphColouringAlgorithm
 	{
 
-	ColEdge[] E;
-	int e,v,k;
-	String inputfile;
-	
+	public SAT3() {
+		bound = Bound.LOWER;
+	}
+
 	/**
-	 * 
-	 * @param E - Array of ColEdge Objs
-	 * @param v - Number of Vertices
-	 * @param e - Number of Edges
-	 * @param k - Number of Colours
+	 * Computes the LOWER BOUND of a graph
+	 * @param e	Array of edges.
+	 * @param m	Number of vertices.
+	 * @param n Number of edges.
+     * @param fileName Number of edges.
+	 * @return LOWER BOUND
 	 */
-	public SAT3(ColEdge[] E, int e, int v,  int k, String inputfile) 
-	{
-		this.E = E;
-		this.e = e;
-		this.v = v;
-		this.k = k;
-		this.inputfile = inputfile;
+	public int solve(ColEdge[] e, int m, int n, String inputfile) {
+		e = ColEdge.copyEdges(e);
+		int k = 2;
+		boolean solved = false;
+		while (!solved) {
+			SAT3 sat3 = new SAT3();
+			solved = sat3.run(e, m, n, k, inputfile);
+			if (!solved) {
+				k++;
+			}
+			Colour.set(bound, k);
+		}
+		return k;
 	}
 	
-	public boolean run() {
+	public boolean run(ColEdge[] e, int m, int n, int k, String inputfile) {
 		// Create a list of colours represented as strings of letters
 		String[] colours = {"a","b","c","d","e","f","g","h","i","j","k","l","m","o","p","q","r","s","t","u","v","w","x","y","z",
 							"ab","ab","ac","ad","ae","af","ag","ah","ai","aj","ak","al","am","ao","ap","aq","ar","as","at","au","av","aw","ax","ay","az"}; 
-		if (ReadGraph.DEBUG) System.out.println("Running Satisfiability for " + k + " colours");
+		if (Colour.DEBUG) System.out.println("Running Satisfiability for " + k + " colours");
 		
 		// Create strings for L for At Least One Colour(ALOC), At Most One Colour (AMOC) and Different Colour (DCOL)
 		// Calculate the total number of String[] arrays required
 		int totalClauses = 0;
 		if(k <= 2)
-			totalClauses = (2 * v + (e * k));
+			totalClauses = (2 * n + (m * k));
 		else
 		{			// performs this (v + ( v * k * tc) + ( e * k)) as a double and the casts to int 
 			double tc = (double) k;
 			tc -= 1;
 			tc = tc / 2;
-			tc = tc * k * v;
-			tc = tc + v + (e * k);
+			tc = tc * k * n;
+			tc = tc + n + (m * k);
 			totalClauses = (int) tc;
 		}
 		
 		//	ALOC string[] = {V + K1, V + K2 ... V + Kn}  for  String[V][K]			|v|
 		String[][] L = new String[totalClauses][];
 		Boolean[][] L_values = new Boolean[totalClauses][];
-		for(int i = 0; i < v; i++)
+		for(int i = 0; i < n; i++)
 		{
 			L[i] = new String[k];
 			L_values[i] = new Boolean[k];
@@ -71,8 +77,8 @@ public class SAT3
 		}
 		
 		//AMOC String[] = {V + K1, V + K2} {V + K1, V + K3}  for String[V][K]	   |v|*k*(k-1)/2
-		int Lpntr = v;
-		for(int i = 1; i <= v; i++)
+		int Lpntr = n;
+		for(int i = 1; i <= n; i++)
 		{
 			for(int j = 0; j < k-1; j++)
 			{
@@ -101,14 +107,14 @@ public class SAT3
 		// DCOL string[] = {V + K + n, U + K + n}		for String[E][K]			e*k
 		for(int j = 0; j < k; j++)
 		{
-			for(int i = 0; i < E.length; i++)
+			for(int i = 0; i < e.length; i++)
 			{
 				// Create two more elements
 				L[Lpntr] = new String[2];
 				L_values[Lpntr] = new Boolean[2];
 				// Add clause (Ui + Kj + n ^ Vi + Kj + n)
-				L[Lpntr][0] = E[i].u + colours[j] + "n";
-				L[Lpntr][1] = E[i].v + colours[j] + "n";
+				L[Lpntr][0] = e[i].u + colours[j] + "n";
+				L[Lpntr][1] = e[i].v + colours[j] + "n";
 				// Add two new corresponding values to the L_Values 
 				L_values[Lpntr][0] = null;
 				L_values[Lpntr][1] = null;
@@ -118,10 +124,10 @@ public class SAT3
 		}
 		
 		// Encode V variables and A values to the arrays	
-		String[] A = new String[v*k];
-		Boolean[] A_values = new Boolean[v*k];
+		String[] A = new String[n*k];
+		Boolean[] A_values = new Boolean[n*k];
 		int Apntr = 0;
-		for(int vertex = 1; vertex <= v; vertex++)
+		for(int vertex = 1; vertex <= n; vertex++)
 		{
 			for(int colour = 0; colour < k; colour++)
 			{
@@ -190,14 +196,14 @@ public class SAT3
 		
 		output = isSatisfiable(L, L_values, A, A_values, null);
 
-		if (ReadGraph.DEBUG) {
+		if (Colour.DEBUG) {
 			System.out.print("3-SAT returns \"" + output.out + "\" for " + k + " colours");
 			if (output.out)
 				System.out.print(" with values: " + Arrays.toString(A) + " = " + Arrays.toString(output.A_values));
 		}
 					
 		double time = (System.nanoTime()-start)/1000000.0;
-		if (ReadGraph.DEBUG) System.out.println("\nThe time needed to perform this analysis was: " + time + " ms.\n");
+		if (Colour.DEBUG) System.out.println("\nThe time needed to perform this analysis was: " + time + " ms.\n");
 		return output.out;
 	}
 
@@ -302,7 +308,7 @@ public class SAT3
 		// 3. If there are no clauses left (i.e. they have all been satisfied and thus discarded), then return TRUE.
 		if (L.length == 0) 
 		{
-			  if(ReadGraph.DEBUG) System.out.println("return: empty L");
+			  if(Colour.DEBUG) System.out.println("return: empty L");
 			  return new ReturnObject(true, A_values);
 		}
 
@@ -321,14 +327,14 @@ public class SAT3
 				}
 			}
 			
-			if(ReadGraph.DEBUG) System.out.println("A: " + Arrays.toString(A) + " = " + Arrays.toString(A_values));
-			if(ReadGraph.DEBUG) System.out.println("L: " + Arrays.deepToString(L));
-			if(ReadGraph.DEBUG) System.out.println("L_values: " + Arrays.deepToString(L_values));
+			if(Colour.DEBUG) System.out.println("A: " + Arrays.toString(A) + " = " + Arrays.toString(A_values));
+			if(Colour.DEBUG) System.out.println("L: " + Arrays.deepToString(L));
+			if(Colour.DEBUG) System.out.println("L_values: " + Arrays.deepToString(L_values));
 		}	     
 
 	    // 2. For each clause in L,
 	    int[] toRemove = new int[L_values.length];		// Modified to dynamically adjust to the maximum length of array
-	    for(int i: toRemove)
+	    for(int i : toRemove)
 	    {
 	    	i = -1;
 	    }
@@ -339,7 +345,7 @@ public class SAT3
 	    	// a. If the clause has had all its primitives filled in, and the clause is false, then return FALSE
 	    	if(containsNull(L_values[i]) && !evaluate(L_values[i]))
 	    	{
-	    		if(ReadGraph.DEBUG) System.out.println("return: L_values[" + i + "] all False");
+	    		if(Colour.DEBUG) System.out.println("return: L_values[" + i + "] all False");
 	    		return new ReturnObject(false, A_values);	
 	    	}
 	        
@@ -350,7 +356,7 @@ public class SAT3
 	    	if(containsNull(L_values[i]) && evaluate(L_values[i])) 
 	    	{
 	    		toRemove[numIndicesToRemove++] = i;
-	    		if(ReadGraph.DEBUG) System.out.println("Index " + i + " to be removed");
+	    		if(Colour.DEBUG) System.out.println("Index " + i + " to be removed");
 	    	}
 	    }
 	    
@@ -365,15 +371,15 @@ public class SAT3
 	    		L_new[pos] = L[i];
 	    		L_values_new[pos] = L_values[i];
 	    		pos++;
-	    		if(ReadGraph.DEBUG) System.out.println("Index " + i + " is kept");
-	    	} else if(ReadGraph.DEBUG) System.out.println(next_p + ": removing..." + Arrays.toString(L[i]) + " = " + Arrays.toString(L_values[i]));
+	    		if(Colour.DEBUG) System.out.println("Index " + i + " is kept");
+	    	} else if(Colour.DEBUG) System.out.println(next_p + ": removing..." + Arrays.toString(L[i]) + " = " + Arrays.toString(L_values[i]));
 	    }
-	    if(ReadGraph.DEBUG) System.out.println(Arrays.deepToString(L_new));
+	    if(Colour.DEBUG) System.out.println(Arrays.deepToString(L_new));
 	    
 	    // 3. If there are no clauses left (i.e. they have all been satisfied and thus discarded), then return TRUE.
 	    if(L_values_new.length == 0) 
 	    {
-	    	if(ReadGraph.DEBUG) System.out.println("return: empty L after removal");
+	    	if(Colour.DEBUG) System.out.println("return: empty L after removal");
 	    	return new ReturnObject(true, A_values);
 	    }
 	    
@@ -402,7 +408,7 @@ public class SAT3
 		    
 		    if (output.out) // 6. If branch1 == TRUE, return TRUE
 		    {
-		    	if(ReadGraph.DEBUG) System.out.println("return: positive branch " + A[a]);
+		    	if(Colour.DEBUG) System.out.println("return: positive branch " + A[a]);
 			    	return new ReturnObject(true, output.A_values);
 		    }
 			
@@ -419,7 +425,7 @@ public class SAT3
 		    
 		    if (output2.out) // 8. If branch2 == TRUE, return TRUE;
 		    {
-		    	if(ReadGraph.DEBUG) System.out.println("return: negative branch " + A[a]);
+		    	if(Colour.DEBUG) System.out.println("return: negative branch " + A[a]);
 		    		return new ReturnObject(true, output2.A_values);
 		    }
 	    }
