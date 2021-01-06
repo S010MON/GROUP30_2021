@@ -8,7 +8,7 @@ public class Colour
 
 	public static void main(String[] args) 
 	{
-		String inputfile = "/home/leon/git/GROUP30_2021/src/graphs/phase3_2020_graph02.txt";
+		String inputfile = "/home/leon/JavaWorkspace/GROUP30_2021/src/graphs/phase3_2020_graph02.txt";
 		String alg = "";
 		int times = 1;
 		int limit = 120;  // 2 minutes
