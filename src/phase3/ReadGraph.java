@@ -1,12 +1,14 @@
 package phase3;
-import java.io.*;
-import java.util.*;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 // -------------------------------------------------------
 
 public class ReadGraph
 {
-	public static boolean DEBUG = false;
 	public final static String COMMENT = "//";
 	
 	private int n = -1; // ! n is the number of vertices in the graph
@@ -38,11 +40,11 @@ public class ReadGraph
 
 			if (record.startsWith("VERTICES = ")) {
 				n = Integer.parseInt(record.substring(11));
-				if (DEBUG)
+				if (Colour.DEBUG)
 					System.out.println(COMMENT + " Number of vertices = " + n);
 			} else {
-				System.out.println("Error! Problem reading file " + inputfile);
-				System.exit(0);
+				br.close();
+				throw new RuntimeException("Unable to read vertex count from " + inputfile);
 			}
 
 			seen = new boolean[n + 1];
@@ -50,24 +52,24 @@ public class ReadGraph
 
 			if (record.startsWith("EDGES = ")) {
 				m = Integer.parseInt(record.substring(8));
-				if (DEBUG)
+				if (Colour.DEBUG)
 					System.out.println(COMMENT + " Expected number of edges = " + m);
 			} else {
-				System.out.println("Error! Problem reading file " + inputfile);
-				System.exit(0);
+				br.close();
+				throw new RuntimeException("Unable to read edge count from " + inputfile);
 			}
 
 			e = new ColEdge[m];
 
 			for (int d = 0; d < m; d++) {
-				if (DEBUG)
+				if (Colour.DEBUG)
 					System.out.println(COMMENT + " Reading edge " + (d + 1));
 				record = br.readLine(); // Pull a new string from the file
 				String data[] = record.split(" "); // Split into array of strings at each " "
 				if (data.length != 2) // If data[] has more than two points (bad read)
 				{
-					System.out.println("Error! Malformed edge line: " + record);
-					System.exit(0);
+					br.close();
+					throw new RuntimeException("Unable to read edges from " + inputfile);
 				}
 				e[d] = new ColEdge();
 
@@ -77,29 +79,30 @@ public class ReadGraph
 				seen[e[d].u] = true;
 				seen[e[d].v] = true;
 
-				if (DEBUG)
+				if (Colour.DEBUG)
 					System.out.println(COMMENT + " Edge: " + e[d].u + " " + e[d].v);
 			}
 
 			String surplus = br.readLine();
 			if (surplus != null) {
 				if (surplus.length() >= 2)
-					if (DEBUG)
+					if (Colour.DEBUG)
 						System.out.println(
 								COMMENT + " Warning: there appeared to be data in your file after the last edge: '"
 										+ surplus + "'");
 			}
+			br.close();
 		}
 
 		catch (IOException ex) {
 			// catch possible io errors from readLine()
 			System.out.println("Error! Problem reading file " + inputfile);
-			System.exit(0);
+			throw new RuntimeException("Unable to read " + inputfile);
 		}
 
 		for (int x = 1; x <= n; x++) {
 			if (seen[x] == false) {
-				if (DEBUG)
+				if (Colour.DEBUG)
 					System.out.println(COMMENT + " Warning: vertex " + x
 							+ " didn't appear in any edge : it will be considered a disconnected vertex on its own.");
 			}

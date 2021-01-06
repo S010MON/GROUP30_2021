@@ -2,12 +2,25 @@ package phase3;
 
 import java.util.Arrays;
 
-public class Greedy
+public class Greedy extends GraphColouringAlgorithm
 {
+
+	public Greedy() {
+		bound = Bound.UPPER;
+	}
 
 	private final boolean DEBUG = false;
 
-	public int run(ColEdge[] e, int m, int n, String fileName){
+	/**
+	 * Computes the UPPER BOUND of a graph
+	 * @param e	Array of edges.
+	 * @param m	Number of vertices.
+	 * @param n Number of edges.
+     * @param fileName Number of edges.
+	 * @return UPPER BOUND
+	 */
+	public int solve(ColEdge[] e, int m, int n, String fileName){
+		e = ColEdge.copyEdges(e);
 		System.out.println("Running Greedy");
 		long start = System.nanoTime();
 		int vertex = 0;
@@ -35,6 +48,7 @@ public class Greedy
 		double time = (System.nanoTime()-start)/1000000.0;
 		System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
 		Logger.logResults("Greedy", fileName , XG + 1, time);
+		Colour.set(bound, XG + 1);
 		return XG + 1;
 	}
 

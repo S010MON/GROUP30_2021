@@ -2,10 +2,23 @@ package phase3;
 
 import java.util.*;
 
-public class Backtracking
+public class Backtracking extends GraphColouringAlgorithm
 		{
+
+			public Backtracking() {
+				bound = Bound.UPPER;
+			}
+
 		
-		public int run(ColEdge[] e, int n, int m, String inputfile) {
+		/**
+		 * Computes the UPPER BOUND of a graph
+		 * @param e	Array of edges.
+		 * @param m	Number of vertices.
+		 * @param n Number of edges.
+		 * @param fileName Number of edges.
+		 * @return UPPER BOUND
+		 */
+		public int solve(ColEdge[] e, int n, int m, String inputfile) {
 
 			long startTime = System.nanoTime();
 
@@ -32,18 +45,19 @@ public class Backtracking
 
 			// Method call to print the chomatic number 
 			int chrom = max(colour);
-			if (ReadGraph.DEBUG) System.out.println(chrom);
+			if (Colour.DEBUG) System.out.println(chrom);
 			double time = (System.nanoTime() - startTime)/1000000.0;
-			if (ReadGraph.DEBUG) System.out.println("Chromatic number: " + chrom);
-			if (ReadGraph.DEBUG) System.out.println("Time needed: " + (time + " ms"));
+			if (Colour.DEBUG) System.out.println("Chromatic number: " + chrom);
+			if (Colour.DEBUG) System.out.println("Time needed: " + (time + " ms"));
 			Logger.logResults("Backtracking", inputfile , chrom, time);
+			Colour.set(bound, chrom);
 			return chrom;
 				
 		}
 
 		static void graphColour(int v, int[] colour, int[][] matrix) {
 		
-			if (ReadGraph.DEBUG) {System.out.println(Arrays.deepToString(matrix)); }
+			if (Colour.DEBUG) {System.out.println(Arrays.deepToString(matrix)); }
 
 			
 			// BASE CASE 
@@ -54,7 +68,7 @@ public class Backtracking
 				if (colour[i] != 0) {
 
 				// the array of colours is printed
-				if (ReadGraph.DEBUG) System.out.println(Arrays.toString(colour));
+				if (Colour.DEBUG) System.out.println(Arrays.toString(colour));
 
 				} else {
 
@@ -108,12 +122,12 @@ public class Backtracking
 		
 					/*I return false if the colour of the two adjacent vertices match 
 					because I cannot use that colour*/
-					if(ReadGraph.DEBUG) {System.out.println("Colour " + colour[i] + " available: false"); }
+					if(Colour.DEBUG) {System.out.println("Colour " + colour[i] + " available: false"); }
 						return false; 
 				}
 			}
 			// Returns true if it is safe to use that colour 
-			if(ReadGraph.DEBUG) {System.out.println("Colour " + cr + " available: true"); }
+			if(Colour.DEBUG) {System.out.println("Colour " + cr + " available: true"); }
 				return true; 
 		}
 
