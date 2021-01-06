@@ -27,9 +27,9 @@ public class BruteForceThread extends Thread
 	{
 		try
 		{
-			if (ReadGraph.DEBUG) System.out.println("Starting thread " + getId());
+			if (Colour.DEBUG) System.out.println("Starting thread " + getId());
 			writeTo[id] = vertices[startfrom].next(vertices, maxColors);
-			if (ReadGraph.DEBUG) System.out.println("Thread " + getId() + " finished");
+			if (Colour.DEBUG) System.out.println("Thread " + getId() + " finished");
 		}
 		catch(Exception e)
 		{

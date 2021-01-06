@@ -11,7 +11,7 @@ package phase3;
 
 import java.util.*;
 
-class Vertex  {
+class Vertex {
     ArrayList<Integer> connections = new ArrayList<>();
 	int color = -1;
         int id;
@@ -92,16 +92,22 @@ class Vertex  {
     }
     
 
-public class BruteForceNoPruningThreaded {
+public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
+    
+    public BruteForceNoPruningThreaded() {
+        bound = Bound.UPPER;
+    }
+
     /**
-     * Main method of the brute force algorithm
-	 * 
-	 * @param e Array of ColEdge objects
-	 * @param n Number of vertices
-     	 * @return The chromatic number
+	 * Computes the CHROMATIC NUMBER of a graph
+	 * @param e	Array of edges.
+	 * @param m	Number of vertices.
+	 * @param n Number of edges.
+     * @param fileName Number of edges.
+	 * @return CHROMATIC NUMBER
 	 */
-	
-    public int run(ColEdge[] e, int n, String inputfile) {
+    public int solve(ColEdge[] e, int m, int n, String inputfile) {
+        e = ColEdge.copyEdges(e);
         long startTime = System.nanoTime();
         int maxColors = 0;
         if (e.length != 0) { // Just in case
@@ -120,15 +126,17 @@ public class BruteForceNoPruningThreaded {
                 
                 // Try to solve using maxColors colors, if it fails, try again with maxColors+1
                 ok = attemptBruteForce(maxColors, vertices);
+                Colour.set(Bound.LOWER, maxColors + 1);
 
                 if (!ok)
                     maxColors++;
             }
         }
         double time = (System.nanoTime() - startTime)/1000000.0;
-        if (ReadGraph.DEBUG) System.out.println("Chromatic number: " + (maxColors + 1));
-        if (ReadGraph.DEBUG) System.out.println("Time needed: " + (time + " ms"));
+        if (Colour.DEBUG) System.out.println("Chromatic number: " + (maxColors + 1));
+        if (Colour.DEBUG) System.out.println("Time needed: " + (time + " ms"));
         Logger.logResults("BruteForceNoPruning", inputfile , maxColors + 1, time);
+        Colour.set(bound, maxColors + 1);
         return maxColors + 1;
     }
 
@@ -141,7 +149,7 @@ public class BruteForceNoPruningThreaded {
      */
     private static boolean attemptBruteForce(int maxColors, Vertex[] vertices) {
         boolean result = threadedBruteForce(maxColors, vertices);
-        if (ReadGraph.DEBUG) System.out.println("Tried " + (maxColors + 1) + " colors: " + result);
+        if (Colour.DEBUG) System.out.println("Tried " + (maxColors + 1) + " colors: " + result);
         return result;
     }
 
