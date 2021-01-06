@@ -42,7 +42,7 @@ public class Colour
 		
 		/* Check for Bipartite Graphs and Trees */
 		DepthFirstSearch dfs = new DepthFirstSearch();
-		dfs.depthFirstSearch(e, n);
+		dfs.run(e, n);
 		if(!dfs.containsLoop())
 		{
 			System.out.println("Chromatic number is: 2");
