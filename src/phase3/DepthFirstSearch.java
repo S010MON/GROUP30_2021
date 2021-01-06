@@ -24,7 +24,7 @@ public class DepthFirstSearch
 	 * @param n - The number of nodes within the graph
 	 * @return int - The number of sub-graphs
 	 */
-	public int depthFirstSearch(ColEdge[] E, int n)
+	public int run(ColEdge[] E, int n)
 	{
 		visited = new boolean[n+1];			// n+1 due to discounting the 0 node
 		adjacent = createMatrix(E, n);
@@ -51,7 +51,7 @@ public class DepthFirstSearch
 			
 			/* Create a new Depth First Search and recursively call it */
 			DepthFirstSearch dfs = new DepthFirstSearch();
-			noOfSubgraphs = noOfSubgraphs + depthFirstSearch(subGraph, n, visited);
+			noOfSubgraphs = noOfSubgraphs + run(subGraph, n, visited);
 			/* Check loop latch in sub graphs */
 			if(dfs.containsLoop())
 				loop = true;
@@ -67,7 +67,7 @@ public class DepthFirstSearch
 	 * @param visited 	- The array of previously visited nodes
 	 * @return int - The number of sub-graphs
 	 */
-	public int depthFirstSearch(ColEdge[] E, int n, boolean[] visited)
+	public int run(ColEdge[] E, int n, boolean[] visited)
 	{
 		this.visited = visited;
 		adjacent = createMatrix(E, n);
@@ -94,7 +94,7 @@ public class DepthFirstSearch
 			
 			/* Create a new Depth First Search and recursively call it */
 			DepthFirstSearch dfs = new DepthFirstSearch();
-			noOfSubgraphs = noOfSubgraphs + depthFirstSearch(subGraph, n, visited);
+			noOfSubgraphs = noOfSubgraphs + run(subGraph, n, visited);
 			/* Check loop latch in sub graphs */
 			if(dfs.containsLoop())
 				loop = true;
