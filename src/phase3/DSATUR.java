@@ -19,7 +19,7 @@ public class DSATUR extends GraphColouringAlgorithm
 		bound = Bound.UPPER;
 	}
 	
-	/**
+	/** -------------------------------------------------------
 	 * Computes the UPPER BOUND of a graph
 	 * @param e	Array of edges.
 	 * @param m	Number of vertices.
@@ -30,7 +30,6 @@ public class DSATUR extends GraphColouringAlgorithm
 	public int solve(ColEdge[] e, int m, int n, String inputfile)
 		{
 			e = ColEdge.copyEdges(e);
-			if(Colour.DEBUG) System.out.println("Running DSATUR");
 			// Start the clock!
 			long start = System.nanoTime();
 			// Colour the most frequent vertex
@@ -63,18 +62,13 @@ public class DSATUR extends GraphColouringAlgorithm
 					chromeNumb = col;
 				
 			}
-			if(Colour.DEBUG) {printGraph(e);}
-			
-			if (Colour.DEBUG) System.out.println("Chromatic Number = " + (chromeNumb + 1)); // Add one due to counting colour 0
 			double time = (System.nanoTime()-start)/1000000.0;
-			if (Colour.DEBUG) System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
 			Logger.logResults("DSATUR", inputfile, chromeNumb + 1, time);
 			Colour.set(bound, chromeNumb + 1);
 			return chromeNumb + 1;
 		}
 		
-		//-------------------------------------------------------
-		/**
+		/** -------------------------------------------------------
 		 * A method that colours the vertices within the ColEdge objects 
 		 * @param e 		- the array of edges
 		 * @param vertex	- the vertex to be coloured
@@ -90,13 +84,11 @@ public class DSATUR extends GraphColouringAlgorithm
 				if(edge.u == vertex)
 					edge.colU = colour;
 			}	
-			if(Colour.DEBUG) {System.out.println("Coloured V" + vertex + " colour " + colour);}
 			return e;
 		}
 		
-		//-------------------------------------------------------
-		/**
-		 * A method that counts the stauration (number of adjacent vertices that have been coloured) 
+		/** -------------------------------------------------------
+		 * A method that counts the saturation (number of adjacent vertices that have been coloured) 
 		 * and returns the highest saturated.
 		 * @param e  		- the edges for the graph
 		 * @param vertices 	- the number of vertices
@@ -113,10 +105,6 @@ public class DSATUR extends GraphColouringAlgorithm
 					sat[e[i].u]++;
 			}
 			
-			if(Colour.DEBUG){
-				for(int i = 0; i < sat.length; i++){
-					System.out.println("V" + i + ": adjacent to " + sat[i] + " vertices");}}
-		
 			int mostSat = 0;			
 			int sum = 0;
 			for(int i = 0; i < sat.length; i++)
@@ -125,13 +113,11 @@ public class DSATUR extends GraphColouringAlgorithm
 					mostSat = i;
 				sum += sat[i];
 			}
-			
-			if(Colour.DEBUG){System.out.println("Saturation: " + sum) ;}
+
 			return mostSat;
 		}
 	
-		//-------------------------------------------------------
-		/**
+		/** -------------------------------------------------------
 		 * A method that counts the frequency of all of the vertices and returns the count of edges to each vertex
 		 * @param e  		- the edges for the graph
 		 * @param vertices 	- the number of vertices
@@ -150,10 +136,6 @@ public class DSATUR extends GraphColouringAlgorithm
 					freq[e[i].u]++;
 			}		
 			
-			if(Colour.DEBUG){
-				for(int i = 0; i < freq.length; i++){
-					System.out.println("V" + i + ": appeared " + freq[i] + " times");}}
-			
 			int mostFreq = 0;						
 			for(int i = 0; i < freq.length; i++)
 			{
@@ -163,8 +145,7 @@ public class DSATUR extends GraphColouringAlgorithm
 			return mostFreq;
 		}
 		
-		//-------------------------------------------------------
-		/**
+		/** -------------------------------------------------------
 		 * Checks each edge for legality using a method within the ColEdge object
 		 * @param e - ColEdge - Array of edges in the graph
 		 * @return  - Boolean - {@code true} if the entire graph is legal 
@@ -177,12 +158,10 @@ public class DSATUR extends GraphColouringAlgorithm
 				if(!e[i].legal())
 					legal = false;
 			}
-			if(Colour.DEBUG) {System.out.println("Legal: " + legal);}
 			return legal;
 		}
 		
-		//-------------------------------------------------------
-		/**
+		/** -------------------------------------------------------
 		 * Checks each edge values for colU and colV are not '-1'.  If the entire graph is coloured
 		 * returns {@code true}
 		 * @param e - ColEdge - Array of edges in the graph
@@ -198,21 +177,7 @@ public class DSATUR extends GraphColouringAlgorithm
 				if(e[i].colU == -1)
 					complete = false;
 			}
-			if(Colour.DEBUG) {System.out.println("complete: " + complete);}
 			return complete;
-		}
-		
-		//-------------------------------------------------------
-		/**
-		 * Prints each edge (v then u) to the terminal.
-		 * @param e - ColEdge - Array of edges in the graph
-		 */
-		private static void printGraph(ColEdge[] e)
-		{
-			for(ColEdge edge: e)
-			{
-				if (Colour.DEBUG) System.out.println("V" + edge.v +" (" + edge.colV +") -> U" + edge.u + "(" + edge.colU + ")");
-			}
 		}
 }
 

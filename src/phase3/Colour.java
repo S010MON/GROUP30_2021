@@ -42,12 +42,15 @@ public class Colour
 		
 		/* Check for Bipartite Graphs and Trees */
 		DepthFirstSearch dfs = new DepthFirstSearch();
-		dfs.run(e, n);
-		if(dfs.isTree() || dfs.checkGraph())
+		try
 		{
-			System.out.println("CHROMATIC NUMBER = 2");
-			System.exit(0);
-		}
+			dfs.run(e, n);
+			if(dfs.isTree() || dfs.checkGraph())
+			{
+				System.out.println("CHROMATIC NUMBER = 2");
+				System.exit(0);
+			}
+		} catch(Exception exception) {}
 		
 		/* Switch for separate algorithms or automatic selection */
 		long start = System.nanoTime();
