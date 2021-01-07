@@ -13,7 +13,7 @@ public class Logger {
      */
     public static void log(String s) {
         try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.csv"), true)) {
-            fileWriter.write("[" + LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "]\t" + s + "\n");
+            fileWriter.write(LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "s\n");
             fileWriter.close();
         } catch (Exception e) {
             System.out.println("Failed to write logs.");
@@ -28,7 +28,7 @@ public class Logger {
      */
     public static void logResults(String algorithm, String inputfile, int chromaticNumber, Double time) {
         try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.csv"), true)) {
-            fileWriter.write(LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "," + algorithm + "," + inputfile + "," + chromaticNumber + "," + time + ";");
+            fileWriter.write(LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "," + algorithm + "," + inputfile + "," + chromaticNumber + "," + time + "\n");
             fileWriter.close();
         } catch (Exception e) {
             System.out.println("Failed to write logs.");
@@ -37,7 +37,7 @@ public class Logger {
     
     public static void logResults(String algorithm, String inputfile, String chromaticNumber, Double time) {
         try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.csv"), true)) {
-            fileWriter.write(LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "," + algorithm + "," + inputfile + "," + chromaticNumber + "," + time + ";");
+            fileWriter.write(LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "," + algorithm + "," + inputfile + "," + chromaticNumber + "," + time + "\n");
             fileWriter.close();
         } catch (Exception e) {
             System.out.println("Failed to write logs.");

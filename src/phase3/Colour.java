@@ -31,7 +31,7 @@ public class Colour
 		/* If an algorithm is requested */
 		else if(args.length == 2)
 		{
-			alg = args[0];
+			alg = args[1];
 			inputfile = args[0];
 		}
 		
@@ -77,7 +77,7 @@ public class Colour
 		
 			/* Run BruteForce */
 			case "bf":
-				for (int i = 0; i < times; i++) run(new Backtracking(), e, m, n, inputfile);
+				for (int i = 0; i < times; i++) run(new BruteForceNoPruningThreaded(), e, m, n, inputfile);
 				break;
 		
 			/* Run Automatic */
