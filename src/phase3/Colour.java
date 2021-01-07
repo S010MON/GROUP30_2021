@@ -80,11 +80,12 @@ public class Colour
 			/* Run Automatic */
 			default: 
 			for (int p = 0; p < times; p++) {
-				int lower = 2;
+				// TODO: Add DFS
+				int lower = 3;
 				int upper = Integer.MAX_VALUE;
 				int chromaticNumber = 0;
 				boolean solved = false;
-				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 2");
+				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
 				if (m == 0) chromaticNumber = 1;
 				else if (n <= 10) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
 				else {
