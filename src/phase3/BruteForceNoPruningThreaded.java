@@ -109,28 +109,26 @@ public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
     public int solve(ColEdge[] e, int m, int n, String inputfile) {
         e = ColEdge.copyEdges(e);
         long startTime = System.nanoTime();
-        int maxColors = 0;
-        if (e.length != 0) { // Just in case
-            Vertex[] vertices = toVertexArray(e, n);
-            int i = 0;
-            boolean ok = false;
-            // Set all the colors to 0
-            for (Vertex v : vertices) {
-                if (v == null) v = vertices[i] = new Vertex(i);
-                v.color = 0;
-                i++;
-            }
-            vertices[0].color = -2; // This is to prevent any potential issues with the verification
-            while (!ok) {
-                i = 0;
-                
-                // Try to solve using maxColors colors, if it fails, try again with maxColors+1
-                ok = attemptBruteForce(maxColors, vertices);
-                Colour.set(Bound.LOWER, maxColors + 1);
+        int maxColors = 2;
+        Vertex[] vertices = toVertexArray(e, n);
+        int i = 0;
+        boolean ok = false;
+        // Set all the colors to 0
+        for (Vertex v : vertices) {
+            if (v == null) v = vertices[i] = new Vertex(i);
+            v.color = 0;
+            i++;
+        }
+        vertices[0].color = -2; // This is to prevent any potential issues with the verification
+        while (!ok) {
+            i = 0;
+            
+            // Try to solve using maxColors colors, if it fails, try again with maxColors+1
+            ok = attemptBruteForce(maxColors, vertices);
+            Colour.set(Bound.LOWER, maxColors + 1);
 
-                if (!ok)
-                    maxColors++;
-            }
+            if (!ok)
+                maxColors++;
         }
         double time = (System.nanoTime() - startTime)/1000000.0;
         if (Colour.DEBUG) System.out.println("Chromatic number: " + (maxColors + 1));
