@@ -7,7 +7,7 @@ public class Colour
 	public static boolean DEBUG = false;
 	public static boolean OUTPUTALLRESULTS = true;
 	static int max = Integer.MAX_VALUE;
-	static int min = 2;
+	static int min = 3;
 
 	public static void main(String[] args) 
 	{
@@ -47,7 +47,7 @@ public class Colour
 			dfs.run(e, n);
 			if(dfs.isTree() || dfs.checkGraph())
 			{
-				System.out.println("Chromatic number is: 2");
+				System.out.println("CHROMATIC NUMBER = 2");
 				System.exit(0);
 			}
 		} catch(Exception exception) {}
@@ -83,10 +83,12 @@ public class Colour
 			/* Run Automatic */
 			default: 
 			for (int p = 0; p < times; p++) {
-				int lower = 2;
+				// TODO: Add DFS
+				int lower = 3;
 				int upper = Integer.MAX_VALUE;
 				int chromaticNumber = 0;
 				boolean solved = false;
+				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
 				if (m == 0) chromaticNumber = 1;
 				else if (n <= 10) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
 				else {
@@ -124,15 +126,15 @@ public class Colour
 		if (OUTPUTALLRESULTS) {
 			switch (b) {
 				case EXACT:
-					System.out.println("Chromatic number is: " + value);
+					System.out.println("CHROMATIC NUMBER = " + value);
 					break;
 				case LOWER:
 					min = Math.max(min, value);
-					System.out.println("Chromatic number is: " + min + "-" + max);
+					System.out.println("NEW BEST LOWER BOUND = " + min);
 					break;
 				case UPPER:
 					max = Math.min(max, value);
-					System.out.println("Chromatic number is: " + min + "-" + max);
+					System.out.println("NEW BEST UPPER BOUND = " + max);
 					break;
 			}
 		}

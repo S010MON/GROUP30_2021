@@ -13,6 +13,8 @@ import java.util.Arrays;
 public class SAT3 extends GraphColouringAlgorithm
 {
 
+		public static final int START = 3; 
+
 	public SAT3() {
 		bound = Bound.LOWER;
 	}
@@ -27,7 +29,7 @@ public class SAT3 extends GraphColouringAlgorithm
 	 */
 	public int solve(ColEdge[] e, int m, int n, String inputfile) {
 		e = ColEdge.copyEdges(e);
-		int k = 2;
+		int k = START;
 		boolean solved = false;
 		while (!solved) {
 			SAT3 sat3 = new SAT3();
