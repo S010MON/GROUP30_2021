@@ -83,6 +83,7 @@ public class Colour
 				int upper = Integer.MAX_VALUE;
 				int chromaticNumber = 0;
 				boolean solved = false;
+				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 2");
 				if (m == 0) chromaticNumber = 1;
 				else if (n <= 10) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
 				else {
@@ -120,15 +121,15 @@ public class Colour
 		if (OUTPUTALLRESULTS) {
 			switch (b) {
 				case EXACT:
-					System.out.println("Chromatic number is: " + value);
+					System.out.println("CHROMATIC NUMBER = " + value);
 					break;
 				case LOWER:
 					min = Math.max(min, value);
-					System.out.println("Chromatic number is: " + min + "-" + max);
+					System.out.println("NEW BEST LOWER BOUND = " + min);
 					break;
 				case UPPER:
 					max = Math.min(max, value);
-					System.out.println("Chromatic number is: " + min + "-" + max);
+					System.out.println("NEW BEST UPPER BOUND = " + max);
 					break;
 			}
 		}
