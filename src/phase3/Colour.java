@@ -89,7 +89,7 @@ public class Colour
 				boolean solved = false;
 				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
 				if (m == 0) chromaticNumber = 1;
-				else if (n <= 20 && m <= 50) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
+				else if (n <= 20 && m <= 40) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
 				else {
 					if (n > 2000 || m > 50000) {
 						upper = run(new Greedy(), e, m, n, inputfile);
