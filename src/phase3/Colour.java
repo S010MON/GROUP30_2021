@@ -83,14 +83,13 @@ public class Colour
 			/* Run Automatic */
 			default: 
 			for (int p = 0; p < times; p++) {
-				// TODO: Add DFS
 				int lower = 3;
 				int upper = Integer.MAX_VALUE;
 				int chromaticNumber = 0;
 				boolean solved = false;
 				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
 				if (m == 0) chromaticNumber = 1;
-				else if (n <= 10) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
+				else if (n <= 20 && m <= 50) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
 				else {
 					if (n > 2000 || m > 50000) {
 						upper = run(new Greedy(), e, m, n, inputfile);
@@ -105,13 +104,11 @@ public class Colour
 						chromaticNumber = run(new SAT3(), e, m, n, inputfile);
 					}
 				}
-				System.out.println("Colors needed: " + chromaticNumber);
+				System.out.println("CHROMATIC NUMBER = " + chromaticNumber);
 				double time3 = (System.nanoTime()-start)/1000000.0;
 				Logger.logResults("AUTO", inputfile, chromaticNumber, time3);
-				System.out.println("Time needed: " + time3 + " ms");
+				if(DEBUG) {System.out.println("Time needed: " + time3 + " ms");}
 			}
-			
-			
 		}
 	}
 	
