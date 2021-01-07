@@ -4,7 +4,7 @@ import phase3.GraphColouringAlgorithm.Bound;
 
 public class Colour
 {
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	public static boolean OUTPUTALLRESULTS = true;
 	static int max = Integer.MAX_VALUE;
 	static int min = 3;
@@ -31,7 +31,7 @@ public class Colour
 		/* If an algorithm is requested */
 		else if(args.length == 2)
 		{
-			alg = args[0];
+			alg = args[1];
 			inputfile = args[0];
 		}
 		
@@ -44,7 +44,7 @@ public class Colour
 		DepthFirstSearch dfs = new DepthFirstSearch();
 		try
 		{
-			dfs.run(e, n);
+			dfs.run(reader.copyEdges(e), n);
 			if(dfs.isTree() || dfs.checkGraph())
 			{
 				System.out.println("CHROMATIC NUMBER = 2");
@@ -77,7 +77,7 @@ public class Colour
 		
 			/* Run BruteForce */
 			case "bf":
-				for (int i = 0; i < times; i++) run(new Backtracking(), e, m, n, inputfile);
+				for (int i = 0; i < times; i++) run(new BruteForceNoPruningThreaded(), e, m, n, inputfile);
 				break;
 		
 			/* Run Automatic */
@@ -89,7 +89,7 @@ public class Colour
 				boolean solved = false;
 				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
 				if (m == 0) chromaticNumber = 1;
-				else if (n <= 20 && m <= 50) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
+				else if (n <= 20 && m <= 40) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
 				else {
 					if (n > 2000 || m > 50000) {
 						upper = run(new Greedy(), e, m, n, inputfile);
