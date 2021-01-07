@@ -45,7 +45,7 @@ public class Colour
 		dfs.run(e, n);
 		if(dfs.isTree() || dfs.checkGraph())
 		{
-			System.out.println("Chromatic number is: 2");
+			System.out.println("CHROMATIC NUMBER = ");
 			System.exit(0);
 		}
 		
