@@ -14,10 +14,18 @@ public class DepthFirstSearch
 	
 	private boolean[] visited;
 	private boolean[][] adjacent;
-	private boolean loop = false;
-	private boolean connected = true;
+	private boolean tree;
+	private boolean connected;
 	private int noOfSubgraphs;
-			
+	private ColEdge[] graph;
+	
+	public DepthFirstSearch()
+	{
+		tree = true;
+		connected = true;
+		noOfSubgraphs = 1;
+	}
+	
 	/** -------------------------------------------------------
 	 * Conducts a recursive search of the graph to discover loops and sub-graphs
 	 * @param E - The set of edges of the graph
@@ -26,13 +34,13 @@ public class DepthFirstSearch
 	 */
 	public int run(ColEdge[] E, int n)
 	{
+		graph = E;
 		visited = new boolean[n+1];			// n+1 due to discounting the 0 node
 		adjacent = createMatrix(E, n);
-		noOfSubgraphs = 1;
 		
 		/* Find the first node and call a recursive search from there */
 		int start = E[0].v;
-		search(adjacent, start, 0);		// 0 denotes no parent nodes
+		search(adjacent, start, 0, 0);		// 0 denotes no parent nodes
 		
 		/* If there are nodes left in the graph -> subgraph */
 		if(unvisitedNodes() > 0)
@@ -53,8 +61,8 @@ public class DepthFirstSearch
 			DepthFirstSearch dfs = new DepthFirstSearch();
 			noOfSubgraphs = noOfSubgraphs + run(subGraph, n, visited);
 			/* Check loop latch in sub graphs */
-			if(dfs.containsLoop())
-				loop = true;
+			if(!dfs.isTree())
+				tree = false;
 		}
 		return noOfSubgraphs;
 	}
@@ -75,7 +83,7 @@ public class DepthFirstSearch
 		
 		/* Find the first node and call a recursive search from there */
 		int start = E[0].v;
-		search(adjacent, start, 0);		// 0 denotes no parent nodes
+		search(adjacent, start, 0, 0);		// 0 denotes no parent nodes
 		
 		/* If there are nodes left in the graph -> subgraph */
 		if(unvisitedNodes() > 0)
@@ -96,8 +104,8 @@ public class DepthFirstSearch
 			DepthFirstSearch dfs = new DepthFirstSearch();
 			noOfSubgraphs = noOfSubgraphs + run(subGraph, n, visited);
 			/* Check loop latch in sub graphs */
-			if(dfs.containsLoop())
-				loop = true;
+			if(dfs.isTree())
+				tree = true;
 		}
 		return noOfSubgraphs;
 	}
@@ -128,7 +136,7 @@ public class DepthFirstSearch
 	 * @param n 			- The current node
 	 * @param parent 		- The parent node of the current node	
 	 */
-	public void search( boolean[][] adjacent, int n, int parent)
+	public void search( boolean[][] adjacent, int n, int parent, int parentCol)
 	{
 		/* Set the current node to visited */
 		visited[n] = true;
@@ -139,19 +147,27 @@ public class DepthFirstSearch
 		{
 			/* If a visited adjacent node is found that is not the parent */
 			if( adjacent[n][m] && visited[m] && (m != n) && (m != parent))
-				loop = true;
+				tree = false;
 			/* If an unvisited adjacent node is found, add to the stack */
 			if( adjacent[n][m] && !visited[m] )
 				stack.push(m);
 		}
 		
+		/* Set the colour of the node in the graph */
+		int myCol;
+		if(parentCol == 1)
+			myCol = 0;
+		else
+			myCol = 1;
+		setColour(n, myCol);
+		
 		/* Work through the stack of adjacent nodes, searching down each one */
 		while(!stack.isEmpty())
 		{
-			search(adjacent, stack.pop(), n);
+			search(adjacent, stack.pop(), n, myCol);
 		}
 	}
-	
+
 	
 	/** -------------------------------------------------------
 	 * Returns the next unvisited node
@@ -188,13 +204,36 @@ public class DepthFirstSearch
 		}
 		return trimmed;
 	}
+	
+	
+	private void setColour(int vertex, int colour)
+	{
+		for(ColEdge e: graph)
+		{
+			if(e.v == vertex)
+				e.colV = colour;
+			if(e.u == vertex)
+				e.colU = colour;
+		}
+	}
+	
+	public boolean checkGraph()
+	{
+		boolean valid = true;
+		for(ColEdge e: graph)
+		{
+			if(!e.legal())
+				valid = false;
+		}
+		return valid;
+	}
 		
 	/** -------------------------------------------------------
 	 * Getters
 	 */
-	public boolean containsLoop()
+	public boolean isTree()
 	{
-		return loop;
+		return tree;
 	}
 	
 	public boolean connected()
