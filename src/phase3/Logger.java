@@ -12,7 +12,7 @@ public class Logger {
      * @param s String to write to log
      */
     public static void log(String s) {
-        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.txt"), true)) {
+        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.csv"), true)) {
             fileWriter.write("[" + LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "]\t" + s + "\n");
             fileWriter.close();
         } catch (Exception e) {
@@ -27,8 +27,8 @@ public class Logger {
      * @param time The time (in ms) it took to run the algorithm
      */
     public static void logResults(String algorithm, String inputfile, int chromaticNumber, Double time) {
-        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.txt"), true)) {
-            fileWriter.write("[" + LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "]\t" + algorithm + "\t" + inputfile + "\t" + chromaticNumber + "\t" + time + "\n");
+        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.csv"), true)) {
+            fileWriter.write(LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "," + algorithm + "," + inputfile + "," + chromaticNumber + "," + time + ";");
             fileWriter.close();
         } catch (Exception e) {
             System.out.println("Failed to write logs.");
@@ -36,37 +36,20 @@ public class Logger {
     }   
     
     public static void logResults(String algorithm, String inputfile, String chromaticNumber, Double time) {
-        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.txt"), true)) {
-            fileWriter.write("[" + LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "]\t" + algorithm + "\t" + inputfile + "\t" + chromaticNumber + "\t" + time + "\n");
+        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.csv"), true)) {
+            fileWriter.write(LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "," + algorithm + "," + inputfile + "," + chromaticNumber + "," + time + ";");
             fileWriter.close();
         } catch (Exception e) {
             System.out.println("Failed to write logs.");
         }
     }
     
-    public static void logResults(String inputfile, int chromaticNumber, Double time) {
-        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.txt"), true)) {
-            fileWriter.write("[" + LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "]\t" + inputfile + "\t" + chromaticNumber + "\t" + time + "\n");
-            fileWriter.close();
-        } catch (Exception e) {
-            System.out.println("Failed to write logs.");
-        }
-    }
-    
-    public static void logResults(String inputfile, String chromaticNumber, Double time) {
-        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.txt"), true)) {
-            fileWriter.write("[" + LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "]\t" + inputfile + "\t" + chromaticNumber + "\t" + time + "\n");
-            fileWriter.close();
-        } catch (Exception e) {
-            System.out.println("Failed to write logs.");
-        }
-    }
 
     /**
      * Clears the log file
      */
     public static void clearLog() {
-        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.txt"))) {
+        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.csv"))) {
             fileWriter.write("");
             fileWriter.close();
         } catch (Exception e) {
