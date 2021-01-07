@@ -11,7 +11,7 @@ package phase3;
 import java.util.Arrays;
 
 public class SAT3 extends GraphColouringAlgorithm
-	{
+{
 
 	public SAT3() {
 		bound = Bound.LOWER;
@@ -136,81 +136,14 @@ public class SAT3 extends GraphColouringAlgorithm
 				Apntr++;
 			}
 		}
-
-/*		
-		System.out.println("Running Satisfiability for 3 colours")   
-		String[][] L = { // ALOC |V|
-						{"1a", "1b", "1c"}, 	
-						{"2a", "2b", "1c"}, 
-						{"3a", "3b", "3c"}, 
-						{"4a", "4b", "4c"}, 
-						{"5a", "5b", "5c"}, 
-						{"6a", "6b", "6c"}, 
-						// AMOC |v|*k*(k-1)/2 
-		                {"1an", "1bn"}, {"1an", "1cn"}, {"1bn", "1cn"},
-						{"2an", "2bn"},	{"2an", "2cn"}, {"2bn", "2cn"},
-						{"3an", "3bn"},	{"3an", "3cn"}, {"3bn", "3cn"},
-						{"4an", "4bn"},	{"4an", "4cn"}, {"4bn", "4cn"},
-						{"5an", "5bn"},	{"5an", "5cn"}, {"5bn", "5cn"},
-						{"6an", "6bn"},	{"6an", "6cn"}, {"6bn", "6cn"},
-	
-						// DCOL |E|*K where K = available colours
-						{"1an", "2an"},	{"1bn", "2bn"},	{"1cn", "2cn"},
-						{"2an", "3an"},	{"2bn", "3bn"},	{"2cn", "3cn"},
-						{"3an", "1an"},	{"3bn", "1bn"},	{"3cn", "1cn"},
-						{"1an", "4an"},	{"1bn", "4bn"},	{"1cn", "4cn"},
-						{"4an", "5an"},	{"4bn", "5bn"},	{"4cn", "5cn"},
-						{"5an", "6an"},	{"5bn", "6bn"},	{"5cn", "6cn"},
-						{"6an", "4an"},	{"6bn", "4bn"},	{"6cn", "4cn"} };
-		Boolean[][] L_values = {
-						{null, null, null}, 	
-						{null, null, null}, 
-						{null, null, null}, 
-						{null, null, null}, 
-						{null, null, null}, 
-						{null, null, null},
-						// AMOC  
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						// DCOL |E|*m where m = available colours
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null},
-						{null, null},	{null, null},	{null, null}};
-		String[] A = {"1a", "2a", "3a", "4a", "5a", "6a",
-					  "1b", "2b", "3b", "4b", "5b", "6b",
-					  "1c", "2c", "3c", "4c", "5c", "6c",};
-		Boolean[] A_values = {null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null};
-*/
 		
-		ReturnObject output = new ReturnObject(true, A_values);
-		// Measure the time needed to find the solution
-		long start = System.nanoTime();
-		
+		ReturnObject output = new ReturnObject(true, A_values);	
 		output = isSatisfiable(L, L_values, A, A_values, null);
-
-		if (Colour.DEBUG) {
-			System.out.print("3-SAT returns \"" + output.out + "\" for " + k + " colours");
-			if (output.out)
-				System.out.print(" with values: " + Arrays.toString(A) + " = " + Arrays.toString(output.A_values));
-		}
-					
-		double time = (System.nanoTime()-start)/1000000.0;
-		if (Colour.DEBUG) System.out.println("\nThe time needed to perform this analysis was: " + time + " ms.\n");
 		return output.out;
 	}
 
-
-	//-------------------------------------------------------
-	
-	/** Method to check the index of a targeted value in a one-dimensional array (-1 if it is not found)
+	/** -------------------------------------------------------
+	 * Method to check the index of a targeted value in a one-dimensional array (-1 if it is not found)
 	 * @param array Array of elements where a concrete value will be checked 
 	 * @param value Value to be found (or not) in the provided array
 	 * @return The method returns the index in <i>array</i> where <i>value</i> was found, -1 otherwise (or if array is null)
@@ -226,9 +159,7 @@ public class SAT3 extends GraphColouringAlgorithm
 		return out;
 	}
 	
-	//-------------------------------------------------------
-	
-	/**
+	/** -------------------------------------------------------
 	 * Method to fill in all the instances of <i>primitive</i> in the array <i>L</i> with <i>value</i>
 	 * @param L List of logical AND clauses
 	 * @param L_values Known values of the logical AND clauses
@@ -250,9 +181,12 @@ public class SAT3 extends GraphColouringAlgorithm
 		return L_values;
 	}
 	
-	//-------------------------------------------------------
-
-	// Method to check if an array contains a given value
+	/** -------------------------------------------------------
+	 * Method to check if an array contains a given value
+	 * @param array
+	 * @param value
+	 * @return
+	 */
 	public Boolean contains(int[] array, int value) 
 	{
 		Boolean found = false;
@@ -264,9 +198,11 @@ public class SAT3 extends GraphColouringAlgorithm
 		return found;
 	}
 	
-	//-------------------------------------------------------
-	
-	// Method to check if there are any null values remaining
+	/** -------------------------------------------------------
+	 *  Method to check if there are any null values remaining
+	 * @param L_values
+	 * @return
+	 */
 	public Boolean containsNull(Boolean[] L_values) 
 	{
 		Boolean contNull = true;
@@ -278,8 +214,11 @@ public class SAT3 extends GraphColouringAlgorithm
 		return contNull;
 	}
 	
-	//-------------------------------------------------------
-	
+	/** -------------------------------------------------------
+	 * 
+	 * @param L_Values
+	 * @return
+	 */
 	public Boolean evaluate(Boolean[] L_Values)
 	{
 		Boolean flag = false;
@@ -290,10 +229,8 @@ public class SAT3 extends GraphColouringAlgorithm
 		}
 		return flag;
 	}
-
-	//-------------------------------------------------------
 	
-	/** 
+	/** -------------------------------------------------------
 	 * This method is the core of the branching algorithm. It goes through all the possible combinations of the input to look for 
 	 * a solution to the 3-SAT problem.
 	 * @param L List of logical AND clauses
