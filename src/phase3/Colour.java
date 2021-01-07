@@ -4,7 +4,7 @@ import phase3.GraphColouringAlgorithm.Bound;
 
 public class Colour
 {
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	public static boolean OUTPUTALLRESULTS = true;
 	static int max = Integer.MAX_VALUE;
 	static int min = 3;
@@ -44,7 +44,7 @@ public class Colour
 		DepthFirstSearch dfs = new DepthFirstSearch();
 		try
 		{
-			dfs.run(e, n);
+			dfs.run(reader.copyEdges(e), n);
 			if(dfs.isTree() || dfs.checkGraph())
 			{
 				System.out.println("CHROMATIC NUMBER = 2");

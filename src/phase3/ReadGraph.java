@@ -129,11 +129,8 @@ public class ReadGraph
 		return n;
 	}
 
-
-	//-------------------------------------------------------
-	/**
+	/** -------------------------------------------------------
 	 * Make a deep copy of a ColEdge array
-	 * 
 	 * @param e - An array of edges
 	 * @return - A deep copy of the array
 	 */
