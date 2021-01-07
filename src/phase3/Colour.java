@@ -105,10 +105,10 @@ public class Colour
 						chromaticNumber = run(new SAT3(), e, m, n, inputfile);
 					}
 				}
-				System.out.println("Colors needed: " + chromaticNumber);
+				System.out.println("CHROMATIC NUMBER = " + chromaticNumber);
 				double time3 = (System.nanoTime()-start)/1000000.0;
 				Logger.logResults("AUTO", inputfile, chromaticNumber, time3);
-				System.out.println("Time needed: " + time3 + " ms");
+				if(DEBUG) {System.out.println("Time needed: " + time3 + " ms");}
 			}
 			
 			
@@ -123,6 +123,7 @@ public class Colour
 	}
 
 	public static void set(Bound b, int value) {
+		Thread.dumpStack();
 		if (OUTPUTALLRESULTS) {
 			switch (b) {
 				case EXACT:
