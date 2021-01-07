@@ -7,7 +7,7 @@ public class Colour
 	public static boolean DEBUG = false;
 	public static boolean OUTPUTALLRESULTS = true;
 	static int max = Integer.MAX_VALUE;
-	static int min = 2;
+	static int min = 3;
 
 	public static void main(String[] args) 
 	{
