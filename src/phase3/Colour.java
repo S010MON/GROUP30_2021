@@ -115,7 +115,7 @@ public class Colour
 	private static int run(GraphColouringAlgorithm gca, ColEdge[] e, int m, int n, String fileName) {
 		long time = System.nanoTime();
 		int out = gca.solve(e, m, n, fileName);
-		Logger.logResults(gca.getClass().toString(), fileName, out, (System.nanoTime() - time) / 1000000.0);
+		Logger.logResults(fileName, out, (System.nanoTime() - time) / 1000000.0);
 		return out;
 	}
 

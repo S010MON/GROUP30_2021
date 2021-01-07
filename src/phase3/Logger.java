@@ -42,7 +42,25 @@ public class Logger {
         } catch (Exception e) {
             System.out.println("Failed to write logs.");
         }
-    }   
+    }
+    
+    public static void logResults(String inputfile, int chromaticNumber, Double time) {
+        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.txt"), true)) {
+            fileWriter.write("[" + LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "]\t" + inputfile + "\t" + chromaticNumber + "\t" + time + "\n");
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println("Failed to write logs.");
+        }
+    }
+    
+    public static void logResults(String inputfile, String chromaticNumber, Double time) {
+        try (FileWriter fileWriter = new FileWriter(new File(System.getProperty("user.dir") + "/log.txt"), true)) {
+            fileWriter.write("[" + LocalDateTime.now().toLocalTime().truncatedTo(ChronoUnit.SECONDS) + "]\t" + inputfile + "\t" + chromaticNumber + "\t" + time + "\n");
+            fileWriter.close();
+        } catch (Exception e) {
+            System.out.println("Failed to write logs.");
+        }
+    }
 
     /**
      * Clears the log file
