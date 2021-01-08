@@ -11,87 +11,6 @@ package phase3;
 
 import java.util.*;
 
-class Vertex {
-    ArrayList<Integer> connections = new ArrayList<>();
-	int color = -1;
-        int id;
-        /**
-         * Creates a Vertex object with id {@code id}
-         * @param id
-         */
-        public Vertex(int id) {
-            this.id = id;
-        }
-
-        /**
-         * Adds the id of a vertex to the list of connections
-         * @param add
-         */
-        public void append(Integer add) {
-            connections.add(add);
-        }
-
-        /**
-         * Recursive method of the brute force algorithm
-         * 
-         * @param vertices Array of Vertex objects
-         * @param maxColors Number of colors to use
-         * @return {@code true} if it is possible to color the graph using {@code maxColors} colors
-         * {@code false} if it is not possible to color the graph using {@code maxColors} colors
-         * 
-         */
-
-        public boolean next(Vertex[] vertices, int maxColors) {
-            color = 0; // Reset the color, all possibilities have to be checked
-            boolean solved = false;
-            while (color <= maxColors) {
-                if (verify(vertices, 1)) return true;                                                                           // If the entire graph is valid, then stop and report
-                if (this != vertices[vertices.length-1]) solved = vertices[id+1].next(vertices, maxColors);                     // If this is not the last vertex, run this method on the next vertex               
-                if (solved) return true;                                                                                        // If the entire graph is reported to be valid, then stop
-                color++;
-                if (id == 1) return false; // id 1 always has to be color 0, because colors are interchangeable (i.e. Graph {0,1,2,0} is the same as {1,2,0,1})
-            }
-            if (color > maxColors) color = 0;
-            return false;
-
-        }
-
-        /**
-         * Verify whether a coloring is valid
-         * 
-         * @param vertices Array of colored Vertex objects
-         * @return {@code true} if the graph is valid
-	     * {@code false} if the graph is invalid
-         */
-        public static boolean verify(Vertex[] vertices, int start) {
-            boolean isVerified = true;
-            // If none of the vertices have a connected vertex with the same color, then it is valid.
-			for (int i = start; i < vertices.length && isVerified; i++) {
-				Vertex vertex = vertices[i];
-				if (vertex.color == -1) return false;
-				for (Integer edge : vertex.connections) {
-					if (vertices[edge].id >= start && vertex.color == vertices[edge].color) return false;
-				}
-			}
-			return true;
-        }
-
-        /**
-         * Method for getting the next possibility for base graph of a certain thread
-         * @param maxColors Maximum number of colors
-         * @param vertices Array of Vertex objects
-         */
-        public void nextPossibility(int maxColor, Vertex[] vertices) {
-	    	if (color == maxColor) {
-            	color = 0;
-            	if (this != vertices[vertices.length-1]) vertices[id+1].nextPossibility(maxColor, vertices); // Pass on to the next vertex
-            } else color++;
-        }
-        
-
-    }
-    
-
 public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
     
     public BruteForceNoPruningThreaded() {
@@ -110,12 +29,12 @@ public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
         e = ColEdge.copyEdges(e);
         long startTime = System.nanoTime();
         int maxColors = 2;
-        Vertex[] vertices = toVertexArray(e, n);
+        ColVertex[] vertices = toVertexArray(e, n);
         int i = 0;
         boolean ok = false;
         // Set all the colors to 0
-        for (Vertex v : vertices) {
-            if (v == null) v = vertices[i] = new Vertex(i);
+        for (ColVertex v : vertices) {
+            if (v == null) v = vertices[i] = new ColVertex(i);
             v.color = 0;
             i++;
         }
@@ -145,7 +64,7 @@ public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
      * @return {@code true} if it is possible to color the graph using {@code maxColors} colors
      * {@code false} if it is not possible to color the graph using {@code maxColors} colors
      */
-    private static boolean attemptBruteForce(int maxColors, Vertex[] vertices) {
+    private static boolean attemptBruteForce(int maxColors, ColVertex[] vertices) {
         boolean result = threadedBruteForce(maxColors, vertices);
         if (Colour.DEBUG) System.out.println("Tried " + (maxColors + 1) + " colors: " + result);
         return result;
@@ -159,7 +78,7 @@ public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
      * @return {@code true} if it is possible to color the graph using {@code maxColors} colors
      * {@code false} if it is not possible to color the graph using {@code maxColors} colors
      */
-    private static boolean threadedBruteForce(int maxColors, Vertex[] vertices) {    
+    private static boolean threadedBruteForce(int maxColors, ColVertex[] vertices) {    
         int threadlevels;
         if (maxColors >= 1) threadlevels = (int) (Math.log10(Runtime.getRuntime().availableProcessors() * 2) / Math.log10(maxColors+1)); // Max 2 threads per processor
         else threadlevels = 1;
@@ -184,11 +103,11 @@ public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
      * @param vertices Array of Vertex objects
      * @return A full copy of a vertex with all vertices copied
      */
-    private static Vertex[] fullCopy(Vertex[] vertices) {
-        Vertex[] nv = new Vertex[vertices.length];
+    private static ColVertex[] fullCopy(ColVertex[] vertices) {
+        ColVertex[] nv = new ColVertex[vertices.length];
         int i = 0;
-        for (Vertex vertex : vertices) {
-            nv[i] = new Vertex(i);
+        for (ColVertex vertex : vertices) {
+            nv[i] = new ColVertex(i);
             nv[i].color = vertex.color;
             nv[i].connections = vertex.connections;
             i++;
@@ -229,17 +148,17 @@ public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
      * @return An array of Vertex objects
      * 
      */
-    private static Vertex[] toVertexArray(ColEdge[] e, int n) {
+    private static ColVertex[] toVertexArray(ColEdge[] e, int n) {
         // Create an array of vertices, each consisting of a list of connected vertices
-        Vertex[] vertices = new Vertex[n + 1];
+        ColVertex[] vertices = new ColVertex[n + 1];
 
         // For each edge, connect both vertices
         for (ColEdge edge : e) {
             if (vertices[edge.u] == null)
-                vertices[edge.u] = new Vertex(edge.u);
+                vertices[edge.u] = new ColVertex(edge.u);
             vertices[edge.u].append(edge.v);
             if (vertices[edge.v] == null)
-                vertices[edge.v] = new Vertex(edge.v);
+                vertices[edge.v] = new ColVertex(edge.v);
             vertices[edge.v].append(edge.u);
         }
         return vertices;

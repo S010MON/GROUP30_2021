@@ -3,7 +3,7 @@ package phase3;
 public class BruteForceThread extends Thread
 {
 	int maxColors, id, startfrom;
-	Vertex[] vertices;
+	ColVertex[] vertices;
 	Boolean[] writeTo;
 	/**
 	 * Creates a thread with the listed variables
@@ -12,7 +12,7 @@ public class BruteForceThread extends Thread
 	 * @param startfrom
 	 * @param id
 	 */
-	public BruteForceThread(int maxColors, Vertex[] vertices, int startfrom, int id, Boolean[] writeTo) {
+	public BruteForceThread(int maxColors, ColVertex[] vertices, int startfrom, int id, Boolean[] writeTo) {
 		this.startfrom = startfrom;
 		this.maxColors = maxColors;
 		this.vertices = vertices;
