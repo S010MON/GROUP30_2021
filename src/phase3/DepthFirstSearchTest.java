@@ -22,19 +22,21 @@ class DepthFirstSearchTest {
 		tree[4] = new ColEdge(); tree[4].v = 3; tree[4].u = 6;
 		
 		/* Act */
-		DepthFirstSearch dfs = new DepthFirstSearch(tree, treeN);
-		boolean actLoop = dfs.containsLoop();
-		System.out.println("Loop " + actLoop);
+		DepthFirstSearch dfs = new DepthFirstSearch();
+		System.out.println(dfs.run(tree, treeN) + " SubGraphs");
+		boolean actTree = dfs.isTree();
+		System.out.println("Tree " + actTree);
 		boolean actConnect = dfs.connected();
 		System.out.println("Connected " + actConnect);
+		System.out.println("Valid: " + dfs.checkGraph());
 		
 		/* Assert */
-		boolean expLoop = false;
+		boolean expTree = true;
 		boolean expConnect = true;
-		assertEquals(expLoop, actLoop);
+		assertEquals(expTree, actTree);
 		assertEquals(expConnect, actConnect);
 	}
-	
+
 	@Test
 	void testBiGraph()
 	{
@@ -42,28 +44,30 @@ class DepthFirstSearchTest {
 		
 		/* Arrange */
 		ColEdge[] bigraph;
-		int bigraphN = 6;
+		int bigraphN = 8;
 		bigraph = new ColEdge[5];
 		bigraph[0] = new ColEdge(); bigraph[0].v = 1; bigraph[0].u = 2;
-		bigraph[1] = new ColEdge(); bigraph[1].v = 1; bigraph[1].u = 4;
-		bigraph[2] = new ColEdge(); bigraph[2].v = 1; bigraph[2].u = 6;
-		bigraph[3] = new ColEdge(); bigraph[3].v = 3; bigraph[3].u = 2;
-		bigraph[4] = new ColEdge(); bigraph[4].v = 5; bigraph[4].u = 6;
+		bigraph[1] = new ColEdge(); bigraph[1].v = 2; bigraph[1].u = 3;
+		bigraph[2] = new ColEdge(); bigraph[2].v = 5; bigraph[2].u = 4;
+		bigraph[3] = new ColEdge(); bigraph[3].v = 6; bigraph[3].u = 7;
+		bigraph[4] = new ColEdge(); bigraph[4].v = 7; bigraph[4].u = 8;
 		
 		/* Act */
-		DepthFirstSearch dfs = new DepthFirstSearch(bigraph, bigraphN);
-		boolean actLoop = dfs.containsLoop();
-		System.out.println("Loop " + actLoop);
+		DepthFirstSearch dfs = new DepthFirstSearch();
+		System.out.println(dfs.run(bigraph, bigraphN) + " SubGraphs");
+		boolean actTree = dfs.isTree();
+		System.out.println("Tree " + actTree);
 		boolean actConnect = dfs.connected();
 		System.out.println("Connected " + actConnect);
+		System.out.println("Valid: " + dfs.checkGraph());
 		
 		/* Assert */
-		boolean expLoop = false;
-		boolean expConnect = true;
-		assertEquals(expLoop, actLoop);
+		boolean expTree = true;
+		boolean expConnect = false;
+		assertEquals(expTree, actTree);
 		assertEquals(expConnect, actConnect);
 	}
-	
+
 	@Test
 	void testGraph()
 	{
@@ -75,22 +79,24 @@ class DepthFirstSearchTest {
 		
 		graph = new ColEdge[5];
 		graph[0] = new ColEdge(); graph[0].v = 1; graph[0].u = 2; 
-		graph[1] = new ColEdge(); graph[1].v = 1; graph[1].u = 3; 
-		graph[2] = new ColEdge(); graph[2].v = 2; graph[2].u = 4; 
+		graph[1] = new ColEdge(); graph[1].v = 2; graph[1].u = 3; 
+		graph[2] = new ColEdge(); graph[2].v = 3; graph[2].u = 4; 
 		graph[3] = new ColEdge(); graph[3].v = 2; graph[3].u = 5; 	
 		graph[4] = new ColEdge(); graph[4].v = 3; graph[4].u = 5;
 		
 		/* Act */
-		DepthFirstSearch dfs = new DepthFirstSearch(graph, graphN);
-		boolean actLoop = dfs.containsLoop();
-		System.out.println("Loop " + actLoop);
+		DepthFirstSearch dfs = new DepthFirstSearch();
+		System.out.println(dfs.run(graph, graphN) + " SubGraphs");
+		boolean actTree = dfs.isTree();
+		System.out.println("Tree " + actTree);
 		boolean actConnect = dfs.connected();
 		System.out.println("Connected " + actConnect);
+		System.out.println("Valid: " + dfs.checkGraph());
 		
 		/* Assert */
-		boolean expLoop = true;
+		boolean expTree = false;
 		boolean expConnect = true;
-		assertEquals(expLoop, actLoop);
+		assertEquals(expTree, actTree);
 		assertEquals(expConnect, actConnect);
 	}
 
@@ -98,11 +104,11 @@ class DepthFirstSearchTest {
 	@Test
 	void testDiscGraph()
 	{
-		System.out.println("\nDisconected Graph");
+		System.out.println("\nDisconnected Graph");
 		
 		/* Arrange */
 		ColEdge[] discgraph;
-		int discgraphN = 8;
+		int discgraphN = 6;
 		
 		discgraph = new ColEdge[6];
 		discgraph[0] = new ColEdge(); discgraph[0].v = 1; discgraph[0].u = 2; 
@@ -113,16 +119,18 @@ class DepthFirstSearchTest {
 		discgraph[5] = new ColEdge(); discgraph[5].v = 6; discgraph[5].u = 4;
 		
 		/* Act */
-		DepthFirstSearch dfs = new DepthFirstSearch(discgraph, discgraphN);
-		boolean actLoop = dfs.containsLoop();
-		System.out.println("Loop " + actLoop);
+		DepthFirstSearch dfs = new DepthFirstSearch();
+		System.out.println(dfs.run(discgraph, discgraphN) + " SubGraphs");
+		boolean actTree = dfs.isTree();
+		System.out.println("Tree " + actTree);
 		boolean actConnect = dfs.connected();
 		System.out.println("Connected " + actConnect);
+		System.out.println("Valid: " + dfs.checkGraph());
 		
 		/* Assert */
-		boolean expLoop = true;
+		boolean expTree = false;
 		boolean expConnect = false;
-		assertEquals(expLoop, actLoop);
+		assertEquals(expTree, actTree);
 		assertEquals(expConnect, actConnect);
 	}
 
