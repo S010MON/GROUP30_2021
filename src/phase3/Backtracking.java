@@ -8,7 +8,6 @@ public class Backtracking extends GraphColouringAlgorithm
 			public Backtracking() {
 				bound = Bound.UPPER;
 			}
-
 		
 		/**
 		 * Computes the UPPER BOUND of a graph
