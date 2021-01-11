@@ -4,7 +4,7 @@ import phase3.GraphColouringAlgorithm.Bound;
 
 public class Colour
 {
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	public static boolean OUTPUTALLRESULTS = true;
 	static int max = Integer.MAX_VALUE;
 	static int min = 3;
@@ -40,17 +40,7 @@ public class Colour
 		int m = reader.getM();
 		int n = reader.getN();
 		
-		/* Check for Bipartite Graphs and Trees */
-		DepthFirstSearch dfs = new DepthFirstSearch();
-		try
-		{
-			dfs.run(reader.copyEdges(e), n);
-			if(dfs.isTree() || dfs.checkGraph())
-			{
-				System.out.println("CHROMATIC NUMBER = 2");
-				System.exit(0);
-			}
-		} catch(Exception exception) {}
+
 		
 		/* Switch for separate algorithms or automatic selection */
 		long start = System.nanoTime();
@@ -82,32 +72,45 @@ public class Colour
 		
 			/* Run Automatic */
 			default: 
-			for (int p = 0; p < times; p++) {
-				int lower = 3;
-				int upper = Integer.MAX_VALUE;
-				int chromaticNumber = 0;
-				boolean solved = false;
-				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
-				if (m == 0) chromaticNumber = 1;
-				else if (n <= 20 && m <= 40) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
-				else {
-					if (n > 2000 || m > 50000) {
-						upper = run(new Greedy(), e, m, n, inputfile);
-					} else {
-						upper = run(new DSATUR(), e, m, n, inputfile);
-						if (upper == lower) {
-							chromaticNumber = lower; // If range is 1, it is exact.
-							solved = true;
+				
+			/* Check for Bipartite Graphs and Trees */
+			DepthFirstSearch dfs = new DepthFirstSearch();
+			try	{
+				dfs.run(reader.copyEdges(e), n);
+			} catch(Exception exception) {}
+			if(dfs.isTree() || dfs.checkGraph())
+			{
+				System.out.println("CHROMATIC NUMBER = 2");
+			}
+			else
+			{
+				for (int p = 0; p < times; p++) {
+					int lower = 3;
+					int upper = Integer.MAX_VALUE;
+					int chromaticNumber = 0;
+					boolean solved = false;
+					if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
+					if (m == 0) chromaticNumber = 1;
+					else if (n <= 20 && m <= 40) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
+					else {
+						if (n > 2000 || m > 50000) {
+							upper = run(new Greedy(), e, m, n, inputfile);
+						} else {
+							upper = run(new DSATUR(), e, m, n, inputfile);
+							if (upper == lower) {
+								chromaticNumber = lower; // If range is 1, it is exact.
+								solved = true;
+							}
+						}
+						if (!solved) {
+							chromaticNumber = run(new SAT3(), e, m, n, inputfile);
 						}
 					}
-					if (!solved) {
-						chromaticNumber = run(new SAT3(), e, m, n, inputfile);
-					}
+					System.out.println("CHROMATIC NUMBER = " + chromaticNumber);
+					double time3 = (System.nanoTime()-start)/1000000.0;
+					Logger.logResults("AUTO", inputfile, chromaticNumber, time3);
+					if(DEBUG) {System.out.println("Time needed: " + time3 + " ms");}
 				}
-				System.out.println("CHROMATIC NUMBER = " + chromaticNumber);
-				double time3 = (System.nanoTime()-start)/1000000.0;
-				Logger.logResults("AUTO", inputfile, chromaticNumber, time3);
-				if(DEBUG) {System.out.println("Time needed: " + time3 + " ms");}
 			}
 		}
 	}
