@@ -3,10 +3,13 @@ package phase3;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 
 class ColourTest 
 {
-	String algo = "bt";	// Set to null for auto
+	public String algo = "bt";	// Set to null for auto
 
 	/* choose from:
 	 * bf 	- Brute Force
@@ -16,7 +19,7 @@ class ColourTest
 	 * s	- 3 SAT
 	 */
 	
-	String[][] phase1 = {
+	public String[][] phase1 = {
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph00_2020.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph01_2020.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph02_2020.txt",algo},
@@ -40,7 +43,7 @@ class ColourTest
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph20_2020.txt",algo},	
 	};
 	
-	String[][] phase3 = {
+	public String[][] phase3 = {
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph01.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph02.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph03.txt",algo},
@@ -63,11 +66,21 @@ class ColourTest
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph20.txt",algo},	
 	};
 	
+	public int graph = 0;
+	public Colour prog;
+	
+	@BeforeEach
+	void setup()
+	{
+		prog = new Colour();
+	}
+	
+	@AfterEach
+	void tearDown()
+	{
+		prog = null;
+	}
 	
 	@Test
-	void test() 
-	{
-		Colour.main(phase1[10]);
-	}
-
+	void test1() { prog.main(phase1[graph]); }
 }

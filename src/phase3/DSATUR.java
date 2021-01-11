@@ -63,7 +63,7 @@ public class DSATUR extends GraphColouringAlgorithm
 				
 			}
 			double time = (System.nanoTime()-start)/1000000.0;
-			Logger.logResults("DSATUR", inputfile, chromeNumb + 1, time);
+			//Logger.logResults("DSATUR", inputfile, chromeNumb + 1, time);
 			Colour.set(bound, chromeNumb + 1);
 			return chromeNumb + 1;
 		}

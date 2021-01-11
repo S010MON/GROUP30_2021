@@ -47,7 +47,7 @@ public class Greedy extends GraphColouringAlgorithm
 		System.out.println("Chromatic Number = " + (XG + 1));
 		double time = (System.nanoTime()-start)/1000000.0;
 		System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
-		Logger.logResults("Greedy", fileName , XG + 1, time);
+		//Logger.logResults("Greedy", fileName , XG + 1, time);
 		Colour.set(bound, XG + 1);
 		return XG + 1;
 	}
