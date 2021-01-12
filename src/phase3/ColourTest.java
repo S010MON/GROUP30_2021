@@ -9,7 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 
 class ColourTest 
 {
-	public String algo = "bt";	// Set to null for auto
+	public String algo = "dfs";	// Set to null for auto
 
 	/* choose from:
 	 * bf 	- Brute Force
@@ -17,6 +17,7 @@ class ColourTest
 	 * bt 	- Back Tracking
 	 * d	- DSATUR
 	 * s	- 3 SAT
+	 * dfs	- Depth First Search
 	 */
 	
 	public String[][] phase1 = {
@@ -66,21 +67,31 @@ class ColourTest
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph20.txt",algo},	
 	};
 	
-	public int graph = 0;
+	// Test order (in ascending complexity)
+	//04
+	//03
+	//18
+	//05
+	//07
+	//09
+	//15
+	//17
+	//01
+	//14
+	//06
+	//13
+	//19
+	//08
+	//20
+	//10
+	//02
+	//12
+	//11
+	//16
+	
+	public int graph = 13;
 	public Colour prog;
 	
-	@BeforeEach
-	void setup()
-	{
-		prog = new Colour();
-	}
-	
-	@AfterEach
-	void tearDown()
-	{
-		prog = null;
-	}
-	
 	@Test
-	void test1() { prog.main(phase1[graph]); }
+	void test1() { Colour.main(phase1[graph]); }
 }
