@@ -7,11 +7,10 @@ public class RecursiveLargestFirstTest
 		System.out.println("\nGraph Test");
 		
 		ReadGraph reader = new ReadGraph();
-		String inputfile = "/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph00_2020.txt";
+		String inputfile = "phase1-graphs/graph04_2020.txt";
 		RecursiveLargestFirst rlf = new RecursiveLargestFirst();
 		
-		int gX = rlf.solve(reader.read(inputfile), reader.getM(), reader.getN());
-		System.out.println("Chromatic number is: " + gX);	
+		int gX = rlf.solve(reader.read(inputfile), reader.getM(), reader.getN(), "test");
 	}
 	
 	public static void main(String[] args) 
