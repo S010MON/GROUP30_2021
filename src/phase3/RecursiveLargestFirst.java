@@ -36,14 +36,15 @@ public class RecursiveLargestFirst {
 		NN =  new int[vertices];//set of non neighbour vertices
 				
 		System.out.println("Running RLF");
+		System.out.println("Graph: "+fileName);
 		long start = System.nanoTime();
 		initialise();
 		coloring();
 		double time = (System.nanoTime()-start)/1000000.0;
 		System.out.println("Chromatic Number = " + XG);
 		System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
-		System.out.println(Arrays.toString(color));
-		Logger.logResults("Greedy", fileName , XG, time);
+		System.out.println("Color array: "+Arrays.toString(color));
+		Logger.logResults("RLF", fileName , XG, time);
 		return XG;
 	}
 	public void coloring() {
