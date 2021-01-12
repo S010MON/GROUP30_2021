@@ -45,6 +45,7 @@ class ColourTest
 	};
 	
 	public String[][] phase3 = {
+			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph00_2020.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph01.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph02.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph03.txt",algo},
@@ -68,30 +69,31 @@ class ColourTest
 	};
 	
 	// Test order (in ascending complexity)
-	//04
-	//03
-	//18
-	//05
-	//07
-	//09
-	//15
-	//17
-	//01
-	//14
-	//06
-	//13
-	//19
-	//08
-	//20
-	//10
-	//02
-	//12
-	//11
-	//16
+	// 19
+	// 20
+	// 7
+	// 2
+	// 12
+	// 13
+	// 8
+	// 9
+	// 4
+	// 17
+	// 3
+	// 14
+	// 11
+	// 6
+	// 1
+	// 5
+	// 18
+	// 10
+	// 16
+	// 15
+
 	
-	public int graph = 13;
+	public int graph = 15;
 	public Colour prog;
 	
 	@Test
-	void test1() { Colour.main(phase1[graph]); }
+	void test1() { Colour.main(phase3[graph]); }
 }
