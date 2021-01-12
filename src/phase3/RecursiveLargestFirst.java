@@ -3,14 +3,13 @@ package phase3;
 import java.util.Arrays;
 
 public class RecursiveLargestFirst {
-	private final int MAX = 6; //max number of vertices allowed in graph
-	private int[][] adjacent = new int[MAX][MAX];
+	private int[][] adjacent;
 	private int vertices;
 	private int edges;
 	private int chromaticNumber;
-	private int[] color = new int[MAX]; // color of vertices, -1 if not colored
-	private int[] degree = new int[MAX]; //array stores degrees (number of edges connected to vertex) of all vertices
-	private int[] NN =  new int[MAX];//set of non neighbour vertices
+	private int[] color; // color of vertices, -1 if not colored
+	private int[] degree; //array stores degrees (number of edges connected to vertex) of all vertices
+	private int[] NN;//set of non neighbour vertices
 	private int NNCount; //size of NN (non-neighbour) array aka number of NN set
 	private int todo; //number of vertices unprocessed
 	
@@ -30,6 +29,12 @@ public class RecursiveLargestFirst {
 		graph = e;
 		vertices = m;
 		edges = n;
+		
+		adjacent = new int[vertices][vertices];
+		color = new int[vertices]; // color of vertices, -1 if not colored
+		degree = new int[vertices]; //array stores degrees (number of edges connected to vertex) of all vertices
+		NN =  new int[vertices];//set of non neighbour vertices
+				
 		System.out.println("Running RLF");
 		initialise();
 		coloring();
@@ -89,7 +94,7 @@ public class RecursiveLargestFirst {
 		int temp, tempy, y;
 		y = -1;
 		//scanned array stores uncolored vertices, except vertex being processed
-		int[] scanned = new int[MAX];
+		int[] scanned = new int[vertices];
 		verticesInCommon = 0;
 		for(int i = 0; i < NNCount; i++) { // check all vertices in NN
 			//tempy is the currently processed vertex

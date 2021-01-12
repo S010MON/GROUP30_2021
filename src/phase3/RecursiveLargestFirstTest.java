@@ -1,24 +1,21 @@
 package phase3;
 
-public class RecursiveLargestFirstTest {
-	void testGraph() {
+public class RecursiveLargestFirstTest 
+{
+	void testGraph() 
+	{
 		System.out.println("\nGraph Test");
-		ColEdge[] graph;
-		int graphN = 6;
-		 
-		graph = new ColEdge[6];
-		graph[0] = new ColEdge(); graph[0].v = 0; graph[0].u = 1; 
-		graph[1] = new ColEdge(); graph[1].v = 1; graph[1].u = 2; 
-		graph[2] = new ColEdge(); graph[2].v = 2; graph[2].u = 3; 
-		graph[3] = new ColEdge(); graph[3].v = 1; graph[3].u = 4; 	
-		graph[4] = new ColEdge(); graph[4].v = 2; graph[4].u = 4;
-		graph[5] = new ColEdge(); graph[5].v = 2; graph[5].u = 5;
 		
+		ReadGraph reader = new ReadGraph();
+		String inputfile = "/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph00_2020.txt";
 		RecursiveLargestFirst rlf = new RecursiveLargestFirst();
-		System.out.println("Chromatic number is: "+rlf.solve(graph, 5, 6));
 		
+		int gX = rlf.solve(reader.read(inputfile), reader.getM(), reader.getN());
+		System.out.println("Chromatic number is: " + gX);	
 	}
-	public static void main(String[] args) {
+	
+	public static void main(String[] args) 
+	{
 		RecursiveLargestFirstTest test = new RecursiveLargestFirstTest();
 		test.testGraph();
 	}
