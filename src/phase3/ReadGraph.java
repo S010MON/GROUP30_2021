@@ -24,7 +24,7 @@ public class ReadGraph
 		try {
 
 			File file = new File(inputfile);
-			if (!file.exists()) inputfile = "src/graphs/phase3_2020_graph" + inputfile + ".txt";
+			if (!file.exists()) inputfile = "src/phase3-graphs/phase3_2020_graph" + inputfile + ".txt";
 
 			FileReader fr = new FileReader(inputfile);
 			BufferedReader br = new BufferedReader(fr);

@@ -40,8 +40,17 @@ public class Colour
 		int m = reader.getM();
 		int n = reader.getN();
 		
-
-		
+		/* Check for Bipartite Graphs and Trees */
+		DepthFirstSearch dfs = new DepthFirstSearch();
+		try
+		{
+			dfs.run(ColEdge.copyEdges(e), n);
+			if(dfs.isTree() || dfs.checkGraph())
+			{
+				System.out.println("CHROMATIC NUMBER = 2");
+				System.exit(0);
+			}
+		} catch(Exception exception) {}
 		/* Switch for separate algorithms or automatic selection */
 		long start = System.nanoTime();
 		switch (alg) {
@@ -120,10 +129,14 @@ public class Colour
 							chromaticNumber = run(new SAT3(), e, m, n, inputfile);
 						}
 					}
-					System.out.println("CHROMATIC NUMBER = " + chromaticNumber);
-					double time3 = (System.nanoTime()-start)/1000000.0;
-					Logger.logResults("AUTO", inputfile, chromaticNumber, time3);
-					if(DEBUG) {System.out.println("Time needed: " + time3 + " ms");}
+					if (!solved) {
+						run(new Backtracking(), e, m, n, inputfile);
+						if (min != max) {
+							chromaticNumber = run(new SAT3(), e, m, n, inputfile);
+						} else {
+							break;
+						}
+					}
 				}
 			}
 		}
@@ -143,13 +156,21 @@ public class Colour
 					System.out.println("CHROMATIC NUMBER = " + value);
 					break;
 				case LOWER:
-					min = Math.max(min, value);
-					System.out.println("NEW BEST LOWER BOUND = " + min);
+					if (value > min) {
+						min = value;
+						System.out.println("NEW BEST LOWER BOUND = " + min);
+					}
 					break;
 				case UPPER:
-					max = Math.min(max, value);
-					System.out.println("NEW BEST UPPER BOUND = " + max);
+					if (value < max) {
+						max = value;
+						System.out.println("NEW BEST UPPER BOUND = " + max);
+					}
 					break;
+					
+			}
+			if (min == max) {
+				System.out.println("CHROMATIC NUMBER = " + min);
 			}
 		}
 	}
