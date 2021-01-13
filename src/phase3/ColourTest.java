@@ -3,10 +3,13 @@ package phase3;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+
 
 class ColourTest 
 {
-	String algo = "bt";	// Set to null for auto
+	public String algo = "g";	// Set to null for auto
 
 	/* choose from:
 	 * bf 	- Brute Force
@@ -14,9 +17,10 @@ class ColourTest
 	 * bt 	- Back Tracking
 	 * d	- DSATUR
 	 * s	- 3 SAT
+	 * dfs	- Depth First Search
 	 */
 	
-	String[][] phase1 = {
+	public String[][] phase1 = {
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph00_2020.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph01_2020.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph02_2020.txt",algo},
@@ -40,7 +44,8 @@ class ColourTest
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph20_2020.txt",algo},	
 	};
 	
-	String[][] phase3 = {
+	public String[][] phase3 = {
+			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase1-graphs/graph00_2020.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph01.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph02.txt",algo},
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph03.txt",algo},
@@ -63,11 +68,32 @@ class ColourTest
 			{"/home/leon/JavaWorkspace/GROUP30_2021/src/phase3-graphs/phase3_2020_graph20.txt",algo},	
 	};
 	
+	// Test order (in ascending complexity)
+	// 19 -
+	// 20 -
+	// 7 -
+	// 2 -
+	// 12 -
+	// 13 -
+	// 8 -
+	// 9 -
+	// 4 -
+	// 17 -
+	// 3 -
+	// 14 -
+	// 11 -
+	// 6 -
+	// 1 -
+	// 5 -
+	// 18 -
+	// 10 -
+	// 16 -
+	// 15 5
+
+	
+	public int graph = 15;
+	public Colour prog;
 	
 	@Test
-	void test() 
-	{
-		Colour.main(phase1[10]);
-	}
-
+	void test1() { Colour.main(phase3[graph]); }
 }

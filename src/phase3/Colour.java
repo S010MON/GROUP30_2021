@@ -70,6 +70,20 @@ public class Colour
 				for (int i = 0; i < times; i++) run(new BruteForceNoPruningThreaded(), e, m, n, inputfile);
 				break;
 		
+			/* Run Depth First Search */
+			case "dfs":
+				DepthFirstSearch d = new DepthFirstSearch();
+				d.run(reader.copyEdges(e), n);
+				double time = (System.nanoTime()-start)/1000000.0;
+				if(d.isTree() || d.checkGraph()) {
+					System.out.println("CHROMATIC NUMBER = 2");
+					Logger.logResults( "DepthFirstSearch", inputfile, 2, (System.nanoTime() - time) / 1000000.0);
+				} else {
+					System.out.println("CHROMATIC NUMBER > 2");
+					Logger.logResults("DepthFirstSearch", inputfile, -1, (System.nanoTime() - time) / 1000000.0);
+				}
+				break;
+				
 			/* Run Automatic */
 			default: 
 				
