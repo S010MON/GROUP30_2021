@@ -7,7 +7,7 @@ public class RecursiveLargestFirstTest
 		System.out.println("\nGraph Test");
 		
 		ReadGraph reader = new ReadGraph();
-		String filename = "graph04_2020.txt";
+		String filename = "graph03_2020.txt";
 		String path = "phase1-graphs/"+filename;
 		RecursiveLargestFirst rlf = new RecursiveLargestFirst();
 		
