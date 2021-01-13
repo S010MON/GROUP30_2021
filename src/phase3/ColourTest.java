@@ -9,7 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 
 class ColourTest 
 {
-	public String algo = "dfs";	// Set to null for auto
+	public String algo = "g";	// Set to null for auto
 
 	/* choose from:
 	 * bf 	- Brute Force
@@ -69,26 +69,26 @@ class ColourTest
 	};
 	
 	// Test order (in ascending complexity)
-	// 19
-	// 20
-	// 7
-	// 2
-	// 12
-	// 13
-	// 8
-	// 9
-	// 4
-	// 17
-	// 3
-	// 14
-	// 11
-	// 6
-	// 1
-	// 5
-	// 18
-	// 10
-	// 16
-	// 15
+	// 19 -
+	// 20 -
+	// 7 -
+	// 2 -
+	// 12 -
+	// 13 -
+	// 8 -
+	// 9 -
+	// 4 -
+	// 17 -
+	// 3 -
+	// 14 -
+	// 11 -
+	// 6 -
+	// 1 -
+	// 5 -
+	// 18 -
+	// 10 -
+	// 16 -
+	// 15 5
 
 	
 	public int graph = 15;
