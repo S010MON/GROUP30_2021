@@ -40,19 +40,6 @@ public class Colour
 		int m = reader.getM();
 		int n = reader.getN();
 		
-		/* Check for Bipartite Graphs and Trees */
-		DepthFirstSearch dfs = new DepthFirstSearch();
-		try
-		{
-			dfs.run(ColEdge.copyEdges(e), n);
-			if(dfs.isTree() || dfs.checkGraph())
-			{
-				System.out.println("CHROMATIC NUMBER = 2");
-				System.exit(0);
-			}
-		} catch(Exception exception) {}
-		/* Switch for separate algorithms or automatic selection */
-		long start = System.nanoTime();
 		switch (alg) {
 			/* Run 3SAT */
 			case "s":	
@@ -78,11 +65,16 @@ public class Colour
 			case "bf":
 				for (int i = 0; i < times; i++) run(new BruteForceNoPruningThreaded(), e, m, n, inputfile);
 				break;
+			/* Run RLF */
+			case "r":
+				for (int i = 0; i < times; i++) run(new RecursiveLargestFirst(), e, m, n, inputfile);
+				break;
 		
 			/* Run Depth First Search */
 			case "dfs":
+				double start = System.currentTimeMillis();
 				DepthFirstSearch d = new DepthFirstSearch();
-				d.run(reader.copyEdges(e), n);
+				d.run(ColEdge.copyEdges(e), n);
 				double time = (System.nanoTime()-start)/1000000.0;
 				if(d.isTree() || d.checkGraph()) {
 					System.out.println("CHROMATIC NUMBER = 2");
@@ -99,7 +91,7 @@ public class Colour
 			/* Check for Bipartite Graphs and Trees */
 			DepthFirstSearch dfs = new DepthFirstSearch();
 			try	{
-				dfs.run(reader.copyEdges(e), n);
+				dfs.run(ColEdge.copyEdges(e), n);
 			} catch(Exception exception) {}
 			if(dfs.isTree() || dfs.checkGraph())
 			{
