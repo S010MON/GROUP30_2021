@@ -6,7 +6,7 @@ public class Backtracking extends GraphColouringAlgorithm
 		{
 
 			public Backtracking() {
-				bound = Bound.UPPER;
+				bound = Bound.LOWER;
 			}
 		
 		/**
@@ -48,7 +48,7 @@ public class Backtracking extends GraphColouringAlgorithm
 			double time = (System.nanoTime() - startTime)/1000000.0;
 			if (Colour.DEBUG) System.out.println("Chromatic number: " + chrom);
 			if (Colour.DEBUG) System.out.println("Time needed: " + (time + " ms"));
-			Logger.logResults("Backtracking", inputfile , chrom, time);
+			//Logger.logResults("Backtracking", inputfile , chrom, time);
 			Colour.set(bound, chrom);
 			return chrom;
 				

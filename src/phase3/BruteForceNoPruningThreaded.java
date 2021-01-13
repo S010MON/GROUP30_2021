@@ -52,7 +52,7 @@ public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
         double time = (System.nanoTime() - startTime)/1000000.0;
         if (Colour.DEBUG) System.out.println("Chromatic number: " + (maxColors + 1));
         if (Colour.DEBUG) System.out.println("Time needed: " + (time + " ms"));
-        Logger.logResults("BruteForceNoPruning", inputfile , maxColors + 1, time);
+        //Logger.logResults("BruteForceNoPruning", inputfile , maxColors + 1, time);
         Colour.set(bound, maxColors + 1);
         return maxColors + 1;
     }
