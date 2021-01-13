@@ -4,7 +4,7 @@ import phase3.GraphColouringAlgorithm.Bound;
 
 public class Colour
 {
-	public static boolean DEBUG = true;
+	public static boolean DEBUG = false;
 	public static boolean OUTPUTALLRESULTS = true;
 	static int max = Integer.MAX_VALUE;
 	static int min = 3;
@@ -44,7 +44,7 @@ public class Colour
 		DepthFirstSearch dfs = new DepthFirstSearch();
 		try
 		{
-			dfs.run(reader.copyEdges(e), n);
+			dfs.run(ColEdge.copyEdges(e), n);
 			if(dfs.isTree() || dfs.checkGraph())
 			{
 				System.out.println("CHROMATIC NUMBER = 2");
@@ -101,7 +101,12 @@ public class Colour
 						}
 					}
 					if (!solved) {
-						chromaticNumber = run(new SAT3(), e, m, n, inputfile);
+						run(new Backtracking(), e, m, n, inputfile);
+						if (min != max) {
+							chromaticNumber = run(new SAT3(), e, m, n, inputfile);
+						} else {
+							break;
+						}
 					}
 				}
 				System.out.println("CHROMATIC NUMBER = " + chromaticNumber);
@@ -126,13 +131,21 @@ public class Colour
 					System.out.println("CHROMATIC NUMBER = " + value);
 					break;
 				case LOWER:
-					min = Math.max(min, value);
-					System.out.println("NEW BEST LOWER BOUND = " + min);
+					if (value > min) {
+						min = value;
+						System.out.println("NEW BEST LOWER BOUND = " + min);
+					}
 					break;
 				case UPPER:
-					max = Math.min(max, value);
-					System.out.println("NEW BEST UPPER BOUND = " + max);
+					if (value < max) {
+						max = value;
+						System.out.println("NEW BEST UPPER BOUND = " + max);
+					}
 					break;
+					
+			}
+			if (min == max) {
+				System.out.println("CHROMATIC NUMBER = " + min);
 			}
 		}
 	}
