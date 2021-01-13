@@ -2,7 +2,7 @@ package phase3;
 
 import java.util.Arrays;
 
-public class RecursiveLargestFirst {
+public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 	private int[][] adjacent;
 	private int vertices;
 	private int edges;
@@ -16,7 +16,7 @@ public class RecursiveLargestFirst {
 	private ColEdge[] graph;
 	
 	public RecursiveLargestFirst() {
-		
+		bound = Bound.LOWER;
 	}
 	/**
 	 * Computes the CHROMATIC NUMBER of a graph
@@ -38,8 +38,8 @@ public class RecursiveLargestFirst {
 		System.out.println("Running RLF");
 		initialise();
 		coloring();
-		System.out.println(Arrays.deepToString(adjacent));
-		System.out.println(Arrays.toString(color));
+		if (Colour.DEBUG) System.out.println(Arrays.deepToString(adjacent));
+		if (Colour.DEBUG) System.out.println(Arrays.toString(color));
 		return chromaticNumber;
 	}
 	public void coloring() {
@@ -181,5 +181,12 @@ public class RecursiveLargestFirst {
 			}
 		}
 		return maxVertex;
+	}
+
+	@Override
+	public int solve(ColEdge[] e, int m, int n, String fileName) {
+		int chrom = solve(e, m, n);
+		Colour.set(bound, chrom);
+		return chrom;
 	}
 }
