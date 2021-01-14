@@ -40,12 +40,12 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 		long start = System.nanoTime();
 		initialise();
 		coloring();
-    double time = (System.nanoTime()-start)/1000000.0;
+    		double time = (System.nanoTime()-start)/1000000.0;
 		if (Colour.DEBUG) System.out.println("Chromatic Number = " + XG);
-    if (Colour.DEBUG) System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
+    		if (Colour.DEBUG) System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
 		if (Colour.DEBUG) System.out.println("Color array: "+Arrays.toString(color));
-    Logger.logResults("RLF", fileName , XG, time);
-  return XG;
+    		Logger.logResults("RLF", fileName , XG, time);
+  		return XG;
 	}
 	public void coloring() {
 		int x,y;
