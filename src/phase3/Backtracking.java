@@ -17,7 +17,7 @@ public class Backtracking extends GraphColouringAlgorithm
 		 * @param fileName Number of edges.
 		 * @return UPPER BOUND
 		 */
-		public int solve(ColEdge[] e, int n, int m, String inputfile) {
+		public int solve(ColEdge[] e, int m, int n, String inputfile) {
 
 			long startTime = System.nanoTime();
 
