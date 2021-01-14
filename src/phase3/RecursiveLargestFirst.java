@@ -24,6 +24,7 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 	 * @param m	Number of vertices.
 	 * @param n Number of edges.
 	 * @return chromatic number
+	 * @author Noah C.
 	 */
 	public int solve(ColEdge[] e, int m, int n, String fileName) {
 		graph = e;
