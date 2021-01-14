@@ -10,7 +10,7 @@ public class RecursiveLargestFirstTest
 		String filename = "graph03_2020.txt";
 		String path = "phase1-graphs/"+filename;
 		RecursiveLargestFirst rlf = new RecursiveLargestFirst();
-		int gX = rlf.solve(reader.read(inputfile), reader.getM(), reader.getN(), inputfile);
+		int gX = rlf.solve(reader.read(filename), reader.getM(), reader.getN(), filename);
 		System.out.println("Chromatic number is: " + gX);	
 	}
 	
