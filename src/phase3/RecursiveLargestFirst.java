@@ -46,7 +46,7 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
     		if (Colour.DEBUG) System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
 		if (Colour.DEBUG) System.out.println("Color array: "+Arrays.toString(color));
 			Logger.logResults("RLF", fileName , XG, time);
-		Colour.set(bound, XG);
+		  Colour.set(bound, XG);
   		return XG;
 	}
 	public void coloring() {
