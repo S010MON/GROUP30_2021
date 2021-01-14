@@ -6,7 +6,7 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 	private int[][] adjacent;
 	private int vertices;
 	private int edges;
-	private int chromaticNumber;
+	private int XG;
 	private int[] color; // color of vertices, -1 if not colored
 	private int[] degree; //array stores degrees (number of edges connected to vertex) of all vertices
 	private int[] NN;//set of non neighbour vertices
@@ -24,11 +24,12 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 	 * @param m	Number of vertices.
 	 * @param n Number of edges.
 	 * @return chromatic number
+	 * @author Noah C.
 	 */
-	public int solve(ColEdge[] e, int m, int n) {
+	public int solve(ColEdge[] e, int m, int n, String fileName) {
 		graph = e;
-		vertices = m;
-		edges = n;
+		edges = m;
+		vertices = n;
 		
 		adjacent = new int[vertices][vertices];
 		color = new int[vertices]; // color of vertices, -1 if not colored
@@ -36,11 +37,17 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 		NN =  new int[vertices];//set of non neighbour vertices
 				
 		System.out.println("Running RLF");
+		System.out.println("Graph: "+fileName);
+		long start = System.nanoTime();
 		initialise();
 		coloring();
-		if (Colour.DEBUG) System.out.println(Arrays.deepToString(adjacent));
-		if (Colour.DEBUG) System.out.println(Arrays.toString(color));
-		return chromaticNumber;
+    		double time = (System.nanoTime()-start)/1000000.0;
+		if (Colour.DEBUG) System.out.println("Chromatic Number = " + XG);
+    		if (Colour.DEBUG) System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
+		if (Colour.DEBUG) System.out.println("Color array: "+Arrays.toString(color));
+			Logger.logResults("RLF", fileName , XG, time);
+		Colour.set(bound, XG);
+  		return XG;
 	}
 	public void coloring() {
 		int x,y;
@@ -65,7 +72,7 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 				updateNonNeighbours(colorNumber);
 			}
 		}
-		chromaticNumber = colorNumber + 1;
+		XG = colorNumber + 1;
 	}
 	//find vertex in NN with max degree
 	private int maxDegreeOfNN() {
@@ -159,11 +166,11 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 				adjacent[i][j] = 0;
 			}
 		}
-		for(int i = 0; i<edges; i++) { //fill in degrees of each vector and adjecency matrix
-			degree[graph[i].v]++;
-			degree[graph[i].u]++;
-			adjacent[graph[i].v][graph[i].u] = 1;
-			adjacent[graph[i].u][graph[i].v] = 1;
+		for(int i = 0; i<edges; i++) { //fill in degrees of each vector and adjacency matrix
+			degree[graph[i].v-1]++;
+			degree[graph[i].u-1]++;
+			adjacent[graph[i].v-1][graph[i].u-1] = 1;
+			adjacent[graph[i].u-1][graph[i].v-1] = 1;
 		}
 		NNCount = 0;
 		todo = vertices;
@@ -181,12 +188,5 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 			}
 		}
 		return maxVertex;
-	}
-
-	@Override
-	public int solve(ColEdge[] e, int m, int n, String fileName) {
-		int chrom = solve(e, m, n);
-		Colour.set(bound, chrom);
-		return chrom;
 	}
 }
