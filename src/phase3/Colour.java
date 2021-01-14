@@ -11,7 +11,7 @@ public class Colour
 
 	public static void main(String[] args) 
 	{
-		String inputfile = "src/graphs/phase3_2020_graph02.txt";
+		String inputfile;
 		String alg = "";
 		int times = 1;
 		ReadGraph reader = new ReadGraph();
@@ -34,16 +34,16 @@ public class Colour
 			alg = args[1];
 			inputfile = args[0];
 		}
+
+		else {
+			throw new RuntimeException("Too many arguments.");
+		}
 		
 		/* Read the file */
 		ColEdge[] e = reader.read(inputfile);
 		int m = reader.getM();
 		int n = reader.getN();
 		
-
-		
-		/* Switch for separate algorithms or automatic selection */
-		long start = System.nanoTime();
 		switch (alg) {
 			/* Run 3SAT */
 			case "s":	
@@ -69,11 +69,16 @@ public class Colour
 			case "bf":
 				for (int i = 0; i < times; i++) run(new BruteForceNoPruningThreaded(), e, m, n, inputfile);
 				break;
+			/* Run RLF */
+			case "r":
+				for (int i = 0; i < times; i++) run(new RecursiveLargestFirst(), e, m, n, inputfile);
+				break;
 		
 			/* Run Depth First Search */
 			case "dfs":
+				double start = System.currentTimeMillis();
 				DepthFirstSearch d = new DepthFirstSearch();
-				d.run(reader.copyEdges(e), n);
+				d.run(ColEdge.copyEdges(e), n);
 				double time = (System.nanoTime()-start)/1000000.0;
 				if(d.isTree() || d.checkGraph()) {
 					System.out.println("CHROMATIC NUMBER = 2");
@@ -86,44 +91,46 @@ public class Colour
 				
 			/* Run Automatic */
 			default: 
-				
-			/* Check for Bipartite Graphs and Trees */
-			DepthFirstSearch dfs = new DepthFirstSearch();
-			try	{
-				dfs.run(reader.copyEdges(e), n);
-			} catch(Exception exception) {}
-			if(dfs.isTree() || dfs.checkGraph())
-			{
-				System.out.println("CHROMATIC NUMBER = 2");
-			}
-			else
-			{
-				for (int p = 0; p < times; p++) {
-					int lower = 3;
-					int upper = Integer.MAX_VALUE;
-					int chromaticNumber = 0;
-					boolean solved = false;
-					if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
-					if (m == 0) chromaticNumber = 1;
-					else if (n <= 20 && m <= 40) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
-					else {
-						if (n > 2000 || m > 50000) {
+			
+			for (int p = 0; p < times; p++) {
+				int lower = 3;
+				int upper = Integer.MAX_VALUE;
+				int chromaticNumber = 0;
+				boolean solved = false;
+				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
+				if (m == 0) chromaticNumber = 1;
+				else if (n <= 20 && m <= 40) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // 1. If trivial, use brute force.
+				else {
+					DepthFirstSearch dfs = new DepthFirstSearch(); // 2. Run DFS.
+					try	{
+						dfs.run(ColEdge.copyEdges(e), n);
+					} catch(Exception exception) {
+						throw new RuntimeException("Failed to run DFS.");
+					}
+					if(dfs.isTree() || dfs.checkGraph())
+					{
+						System.out.println("CHROMATIC NUMBER = 2");
+					}
+					else
+					{
+						if (m > 10000) { // 3. If edges > 10000, run Greedy; else run DSatur.
 							upper = run(new Greedy(), e, m, n, inputfile);
 						} else {
 							upper = run(new DSATUR(), e, m, n, inputfile);
-							if (upper == lower) {
-								chromaticNumber = lower; // If range is 1, it is exact.
-								solved = true;
-							}
 						}
-						if (!solved) {
-							chromaticNumber = run(new SAT3(), e, m, n, inputfile);
+						if (upper == lower) {
+							chromaticNumber = lower; // If range is 1, it is exact.
+							solved = true;
 						}
 					}
-					System.out.println("CHROMATIC NUMBER = " + chromaticNumber);
-					double time3 = (System.nanoTime()-start)/1000000.0;
-					Logger.logResults("AUTO", inputfile, chromaticNumber, time3);
-					if(DEBUG) {System.out.println("Time needed: " + time3 + " ms");}
+				}
+				if (!solved) {
+					run(new Backtracking(), e, m, n, inputfile); // 4. Run Backtracking
+					if (min != max) {
+						chromaticNumber = run(new SAT3(), e, m, n, inputfile); // 5. Run 3-SAT
+					} else {
+						break;
+					}
 				}
 			}
 		}
@@ -143,13 +150,21 @@ public class Colour
 					System.out.println("CHROMATIC NUMBER = " + value);
 					break;
 				case LOWER:
-					min = Math.max(min, value);
-					System.out.println("NEW BEST LOWER BOUND = " + min);
+					if (value > min) {
+						min = value;
+						System.out.println("NEW BEST LOWER BOUND = " + min);
+					}
 					break;
 				case UPPER:
-					max = Math.min(max, value);
-					System.out.println("NEW BEST UPPER BOUND = " + max);
+					if (value < max) {
+						max = value;
+						System.out.println("NEW BEST UPPER BOUND = " + max);
+					}
 					break;
+					
+			}
+			if (min == max) {
+				System.out.println("CHROMATIC NUMBER = " + min);
 			}
 		}
 	}

@@ -2,7 +2,7 @@ package phase3;
 
 import java.util.Arrays;
 
-public class RecursiveLargestFirst {
+public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 	private int[][] adjacent;
 	private int vertices;
 	private int edges;
@@ -16,7 +16,7 @@ public class RecursiveLargestFirst {
 	private ColEdge[] graph;
 	
 	public RecursiveLargestFirst() {
-		
+		bound = Bound.LOWER;
 	}
 	/**
 	 * Computes the CHROMATIC NUMBER of a graph
@@ -40,12 +40,12 @@ public class RecursiveLargestFirst {
 		long start = System.nanoTime();
 		initialise();
 		coloring();
-		double time = (System.nanoTime()-start)/1000000.0;
-		System.out.println("Chromatic Number = " + XG);
-		System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
-		System.out.println("Color array: "+Arrays.toString(color));
-		Logger.logResults("RLF", fileName , XG, time);
-		return XG;
+    double time = (System.nanoTime()-start)/1000000.0;
+		if (Colour.DEBUG) System.out.println("Chromatic Number = " + XG);
+    if (Colour.DEBUG) System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
+		if (Colour.DEBUG) System.out.println("Color array: "+Arrays.toString(color));
+    Logger.logResults("RLF", fileName , XG, time);
+  return XG;
 	}
 	public void coloring() {
 		int x,y;
@@ -186,5 +186,12 @@ public class RecursiveLargestFirst {
 			}
 		}
 		return maxVertex;
+	}
+
+	@Override
+	public int solve(ColEdge[] e, int m, int n, String fileName) {
+		int chrom = solve(e, m, n);
+		Colour.set(bound, chrom);
+		return chrom;
 	}
 }

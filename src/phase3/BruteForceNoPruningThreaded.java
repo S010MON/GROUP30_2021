@@ -9,8 +9,6 @@ package phase3;
  * @version 1.0
  */
 
-import java.util.*;
-
 public class BruteForceNoPruningThreaded extends GraphColouringAlgorithm {
     
     public BruteForceNoPruningThreaded() {
