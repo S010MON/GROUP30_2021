@@ -9,13 +9,14 @@ import org.junit.jupiter.api.AfterEach;
 
 class ColourTest 
 {
-	public String algo = "g";	// Set to null for auto
+	public String algo = "bt";	// Set to null for auto
 
 	/* choose from:
 	 * bf 	- Brute Force
 	 * g	- Greedy
 	 * bt 	- Back Tracking
 	 * d	- DSATUR
+	 * r	- RLF
 	 * s	- 3 SAT
 	 * dfs	- Depth First Search
 	 */
@@ -69,31 +70,30 @@ class ColourTest
 	};
 	
 	// Test order (in ascending complexity)
-	// 19 -
-	// 20 -
-	// 7 -
-	// 2 -
-	// 12 -
-	// 13 -
-	// 8 -
-	// 9 -
-	// 4 -
-	// 17 -
-	// 3 -
-	// 14 -
-	// 11 -
-	// 6 -
-	// 1 -
-	// 5 -
-	// 18 -
-	// 10 -
-	// 16 -
-	// 15 5
+	// 19
+	// 20
+	// 7  
+	// 2  
+	// 12 
+	// 13 
+	// 8  
+	// 9  
+	// 4  
+	// 17 
+	// 3 
+	// 14
+	// 11 
+	// 6  
+	// 1  
+	// 5 
+	// 18
+	// 10
+	// 16
+	// 15
 
 	
-	public int graph = 15;
-	public Colour prog;
+	public int graph = 5;
 	
 	@Test
-	void test1() { Colour.main(phase3[graph]); }
+	void test1() { Colour.main(phase1[graph]); }
 }

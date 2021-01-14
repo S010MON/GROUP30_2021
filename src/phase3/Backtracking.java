@@ -25,15 +25,15 @@ public class Backtracking extends GraphColouringAlgorithm
 			int [][] matrix= new int[n+1][n+1];
 				
 
-			for(int i=0;i<m;i++){
+			for(int i=0;i<e.length;i++){
 				
 				int a = e[i].u;
 				int b = e[i].v;
 				
 				matrix[a-1][b-1]=1;
 				matrix[b-1][a-1]=1;
-				
 			}
+			
 		
 			// Colour array
 			int [] colour = new int[n+1];
