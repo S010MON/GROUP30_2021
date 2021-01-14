@@ -45,7 +45,8 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 		if (Colour.DEBUG) System.out.println("Chromatic Number = " + XG);
     		if (Colour.DEBUG) System.out.println("The time needed to perform this analysis was: " + time + " ms.\n");
 		if (Colour.DEBUG) System.out.println("Color array: "+Arrays.toString(color));
-    		Logger.logResults("RLF", fileName , XG, time);
+			Logger.logResults("RLF", fileName , XG, time);
+		  Colour.set(bound, XG);
   		return XG;
 	}
 	public void coloring() {
@@ -187,12 +188,5 @@ public class RecursiveLargestFirst extends GraphColouringAlgorithm {
 			}
 		}
 		return maxVertex;
-	}
-
-	@Override
-	public int solve(ColEdge[] e, int m, int n, String fileName) {
-		int chrom = solve(e, m, n);
-		Colour.set(bound, chrom);
-		return chrom;
 	}
 }

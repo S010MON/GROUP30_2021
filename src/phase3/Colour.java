@@ -4,8 +4,8 @@ import phase3.GraphColouringAlgorithm.Bound;
 
 public class Colour
 {
-	public static boolean DEBUG = false;
-	public static boolean OUTPUTALLRESULTS = true;
+	public static final boolean DEBUG = false;
+	public static boolean outputAllResults = true;
 	static int max = Integer.MAX_VALUE;
 	static int min = 3;
 
@@ -47,31 +47,50 @@ public class Colour
 		switch (alg) {
 			/* Run 3SAT */
 			case "s":	
-				for (int i = 0; i < times; i++) run(new SAT3(), e, m, n, inputfile);
+				for (int i = 0; i < times; i++) {
+					outputAllResults = false;
+					System.out.println("OUTPUT: " + run(new SAT3(), e, m, n, inputfile));
+				}
 				break;
 			
 			/* Run DSatur */
 			case "d":
-				for (int i = 0; i < times; i++) run(new DSATUR(), e, m, n, inputfile);
+				for (int i = 0; i < times; i++) {
+					outputAllResults = false;
+					System.out.println("OUTPUT: " + run(new DSATUR(), e, m, n, inputfile));
+				}
 				break;
 	
 			/* Run Greedy */
 			case "g":
-				for (int i = 0; i < times; i++) run(new Greedy(), e, m, n, inputfile);
+				for (int i = 0; i < times; i++) {
+					outputAllResults = false;
+					System.out.println("OUTPUT: " + run(new Greedy(), e, m, n, inputfile));
+				}
 				break;
 			
 			/* Run Backtracking */
 			case "bt":	
-				for (int i = 0; i < times; i++) run(new Backtracking(), e, m, n, inputfile);
+				for (int i = 0; i < times; i++) {
+					outputAllResults = false;
+					System.out.println("OUTPUT: " + run(new Backtracking(), e, m, n, inputfile));
+				}
 				break;
 		
 			/* Run BruteForce */
 			case "bf":
-				for (int i = 0; i < times; i++) run(new BruteForceNoPruningThreaded(), e, m, n, inputfile);
+				for (int i = 0; i < times; i++) {
+					outputAllResults = false;
+					System.out.println("OUTPUT: " + run(new BruteForceNoPruningThreaded(), e, m, n, inputfile));
+				}
 				break;
+
 			/* Run RLF */
 			case "r":
-				for (int i = 0; i < times; i++) run(new RecursiveLargestFirst(), e, m, n, inputfile);
+				for (int i = 0; i < times; i++) {
+					outputAllResults = false;
+					System.out.println("OUTPUT: " + run(new RecursiveLargestFirst(), e, m, n, inputfile));
+				}
 				break;
 		
 			/* Run Depth First Search */
@@ -144,7 +163,7 @@ public class Colour
 	}
 
 	public static void set(Bound b, int value) {
-		if (OUTPUTALLRESULTS) {
+		if (outputAllResults) {
 			switch (b) {
 				case EXACT:
 					System.out.println("CHROMATIC NUMBER = " + value);
