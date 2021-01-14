@@ -11,7 +11,7 @@ public class Colour
 
 	public static void main(String[] args) 
 	{
-		String inputfile = "src/graphs/phase3_2020_graph02.txt";
+		String inputfile;
 		String alg = "";
 		int times = 1;
 		ReadGraph reader = new ReadGraph();
@@ -33,6 +33,10 @@ public class Colour
 		{
 			alg = args[1];
 			inputfile = args[0];
+		}
+
+		else {
+			throw new RuntimeException("Too many arguments.");
 		}
 		
 		/* Read the file */
@@ -87,47 +91,45 @@ public class Colour
 				
 			/* Run Automatic */
 			default: 
-				
-			/* Check for Bipartite Graphs and Trees */
-			DepthFirstSearch dfs = new DepthFirstSearch();
-			try	{
-				dfs.run(ColEdge.copyEdges(e), n);
-			} catch(Exception exception) {}
-			if(dfs.isTree() || dfs.checkGraph())
-			{
-				System.out.println("CHROMATIC NUMBER = 2");
-			}
-			else
-			{
-				for (int p = 0; p < times; p++) {
-					int lower = 3;
-					int upper = Integer.MAX_VALUE;
-					int chromaticNumber = 0;
-					boolean solved = false;
-					if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
-					if (m == 0) chromaticNumber = 1;
-					else if (n <= 20 && m <= 40) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // If trivial, use brute force.
-					else {
-						if (n > 2000 || m > 50000) {
+			
+			for (int p = 0; p < times; p++) {
+				int lower = 3;
+				int upper = Integer.MAX_VALUE;
+				int chromaticNumber = 0;
+				boolean solved = false;
+				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
+				if (m == 0) chromaticNumber = 1;
+				else if (n <= 20 && m <= 40) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // 1. If trivial, use brute force.
+				else {
+					DepthFirstSearch dfs = new DepthFirstSearch(); // 2. Run DFS.
+					try	{
+						dfs.run(ColEdge.copyEdges(e), n);
+					} catch(Exception exception) {
+						throw new RuntimeException("Failed to run DFS.");
+					}
+					if(dfs.isTree() || dfs.checkGraph())
+					{
+						System.out.println("CHROMATIC NUMBER = 2");
+					}
+					else
+					{
+						if (m > 10000) { // 3. If edges > 10000, run Greedy; else run DSatur.
 							upper = run(new Greedy(), e, m, n, inputfile);
 						} else {
 							upper = run(new DSATUR(), e, m, n, inputfile);
-							if (upper == lower) {
-								chromaticNumber = lower; // If range is 1, it is exact.
-								solved = true;
-							}
 						}
-						if (!solved) {
-							chromaticNumber = run(new SAT3(), e, m, n, inputfile);
+						if (upper == lower) {
+							chromaticNumber = lower; // If range is 1, it is exact.
+							solved = true;
 						}
 					}
-					if (!solved) {
-						run(new Backtracking(), e, m, n, inputfile);
-						if (min != max) {
-							chromaticNumber = run(new SAT3(), e, m, n, inputfile);
-						} else {
-							break;
-						}
+				}
+				if (!solved) {
+					run(new Backtracking(), e, m, n, inputfile); // 4. Run Backtracking
+					if (min != max) {
+						chromaticNumber = run(new SAT3(), e, m, n, inputfile); // 5. Run 3-SAT
+					} else {
+						break;
 					}
 				}
 			}
