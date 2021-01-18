@@ -6,7 +6,7 @@ public class Backtracking extends GraphColouringAlgorithm
 		{
 
 			public Backtracking() {
-				bound = Bound.LOWER;
+				bound = Bound.UPPER;
 			}
 		
 		/**

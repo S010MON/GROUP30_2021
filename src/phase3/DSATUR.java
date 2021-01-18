@@ -31,7 +31,6 @@ public class DSATUR extends GraphColouringAlgorithm
 		{
 			e = ColEdge.copyEdges(e);
 			// Start the clock!
-			long start = System.nanoTime();
 			// Colour the most frequent vertex
 			colour(e, mostFreq(e, n), 0);
 			int chromeNumb = 0;
@@ -62,8 +61,6 @@ public class DSATUR extends GraphColouringAlgorithm
 					chromeNumb = col;
 				
 			}
-			double time = (System.nanoTime()-start)/1000000.0;
-			//Logger.logResults("DSATUR", inputfile, chromeNumb + 1, time);
 			Colour.set(bound, chromeNumb + 1);
 			return chromeNumb + 1;
 		}
@@ -106,12 +103,10 @@ public class DSATUR extends GraphColouringAlgorithm
 			}
 			
 			int mostSat = 0;			
-			int sum = 0;
 			for(int i = 0; i < sat.length; i++)
 			{
 				if(sat[i] > sat[mostSat])
 					mostSat = i;
-				sum += sat[i];
 			}
 
 			return mostSat;

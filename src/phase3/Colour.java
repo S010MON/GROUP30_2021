@@ -114,11 +114,11 @@ public class Colour
 			for (int p = 0; p < times; p++) {
 				int lower = 3;
 				int upper = Integer.MAX_VALUE;
-				int chromaticNumber = 0;
 				boolean solved = false;
 				if (m != 0) System.out.println("NEW BEST LOWER BOUND = 3");
-				if (m == 0) chromaticNumber = 1;
-				else if (n <= 20 && m <= 40) chromaticNumber = run(new BruteForceNoPruningThreaded(), e, m, n, inputfile); // 1. If trivial, use brute force.
+				if (m == 0) {
+				} else if (n <= 20 && m <= 40)
+					run(new BruteForceNoPruningThreaded(), e, m, n, inputfile);
 				else {
 					DepthFirstSearch dfs = new DepthFirstSearch(); // 2. Run DFS.
 					try	{
@@ -138,23 +138,26 @@ public class Colour
 							upper = run(new DSATUR(), e, m, n, inputfile);
 						}
 						if (upper == lower) {
-							chromaticNumber = lower; // If range is 1, it is exact.
 							solved = true;
 						}
 					}
 				}
 				if (!solved) {
-					run(new Backtracking(), e, m, n, inputfile); // 4. Run Backtracking
-					if (min != max) {
-						chromaticNumber = run(new SAT3(), e, m, n, inputfile); // 5. Run 3-SAT
-					} else {
-						break;
-					}
+					run(new SAT3(), e, m, n, inputfile);
 				}
 			}
 		}
 	}
 	
+	/**
+	 * Runs a GraphColouringAlgorithm
+	 * @param gca GraphColouringAlgorithm
+	 * @param e Array of ColEdge objects
+	 * @param m Number of vertices
+	 * @param n Number of edges
+	 * @param fileName Filename to use for logging
+	 * @return Chromatic number
+	 */
 	private static int run(GraphColouringAlgorithm gca, ColEdge[] e, int m, int n, String fileName) {
 		long time = System.nanoTime();
 		int out = gca.solve(e, m, n, fileName);
@@ -162,6 +165,11 @@ public class Colour
 		return out;
 	}
 
+	/**
+	 * Updates the bounds of the chromatic number
+	 * @param b Bound
+	 * @param value Value
+	 */
 	public static void set(Bound b, int value) {
 		if (outputAllResults) {
 			switch (b) {
@@ -182,7 +190,7 @@ public class Colour
 					break;
 					
 			}
-			if (min == max) {
+			if (min == max && b != Bound.EXACT) {
 				System.out.println("CHROMATIC NUMBER = " + min);
 			}
 		}

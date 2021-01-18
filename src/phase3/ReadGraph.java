@@ -1,7 +1,6 @@
 package phase3;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -22,9 +21,6 @@ public class ReadGraph
 		boolean seen[] = null;
 
 		try {
-
-			File file = new File(inputfile);
-			if (!file.exists()) inputfile = "src/phase3-graphs/phase3_2020_graph" + inputfile + ".txt";
 
 			FileReader fr = new FileReader(inputfile);
 			BufferedReader br = new BufferedReader(fr);

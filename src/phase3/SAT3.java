@@ -273,10 +273,11 @@ public class SAT3 extends GraphColouringAlgorithm
 
 	    // 2. For each clause in L,
 	    int[] toRemove = new int[L_values.length];		// Modified to dynamically adjust to the maximum length of array
-	    for(int i : toRemove)
-	    {
-	    	i = -1;
-	    }
+
+		for (int i = 0; i < toRemove.length; i++) {
+			toRemove[i] = -1;
+		}
+
 	    int numIndicesToRemove = 0;
 	    
 	    for (int i=0; i<L.length; i++) 
